@@ -13,6 +13,7 @@ public class Part : MonoBehaviour
     bool isPick;
     bool canConnect;
     public bool CanConnect => canConnect;
+    public bool isConected;
 
     [SerializeField] List<ConnectPoint> connectPoints = new List<ConnectPoint>();
     GameObject gohst;
@@ -20,8 +21,6 @@ public class Part : MonoBehaviour
     ConnectPoint _connectPoint1;
     ConnectPoint _connectPoint2;
     float _angle;
-
-    //ConnectPoint connectedToParentPoint;
 
 
     void Awake()
@@ -129,6 +128,7 @@ public class Part : MonoBehaviour
         Player player = GameManager.instance.player;
         player.AddPart(this);
 
+        isConected = true;
         isPick = false;
         canConnect = false;
         gohst.SetActive(false);
@@ -137,6 +137,7 @@ public class Part : MonoBehaviour
     public void Pick()
     {
         isPick = true;
+        isConected = false;
         GameManager.instance.player.RemovePart(this);
         PartSpawner.instance.AddFloatingPart(this);
 

@@ -162,9 +162,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9a91a26a1a404988b16aa315cf746c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mass: 1
+  mass: 0
   isCockpit: 0
   isConstructMode: 0
+  isConected: 0
   connectPoints: []
   connectedParts: []
 --- !u!212 &4752772885788998883
@@ -207,7 +208,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -5
   m_Sprite: {fileID: 21300000, guid: 25bc8cfb37f114373a06c0cb4e62e57c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -689,10 +690,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3939789547906484128, guid: a2678865571fe435d9c57ecc4cc5f6ba, type: 3}
       propertyPath: angleList.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3939789547906484128, guid: a2678865571fe435d9c57ecc4cc5f6ba, type: 3}
       propertyPath: angleList.Array.data[1]
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3939789547906484128, guid: a2678865571fe435d9c57ecc4cc5f6ba, type: 3}
+      propertyPath: angleList.Array.data[2]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3939789547906484128, guid: a2678865571fe435d9c57ecc4cc5f6ba, type: 3}
+      propertyPath: angleList.Array.data[3]
       value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 7925515488180141155, guid: a2678865571fe435d9c57ecc4cc5f6ba, type: 3}
@@ -819,11 +828,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3939789547906484128, guid: a2678865571fe435d9c57ecc4cc5f6ba, type: 3}
       propertyPath: angleList.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3939789547906484128, guid: a2678865571fe435d9c57ecc4cc5f6ba, type: 3}
       propertyPath: angleList.Array.data[1]
       value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3939789547906484128, guid: a2678865571fe435d9c57ecc4cc5f6ba, type: 3}
+      propertyPath: angleList.Array.data[2]
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 7925515488180141155, guid: a2678865571fe435d9c57ecc4cc5f6ba, type: 3}
       propertyPath: m_Pivot.x

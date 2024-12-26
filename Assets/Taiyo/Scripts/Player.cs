@@ -131,7 +131,8 @@ public class Player : MonoBehaviour
 
     public void AddPart(Part part)
     {
-        partsList.Add(part);
+        if (!partsList.Contains(part)) partsList.Add(part);
+        else return;
 
         if (part is Part_Frame)
         {
@@ -139,7 +140,7 @@ public class Player : MonoBehaviour
             foreach (Part childPart in part_Frame.connectedParts)
             {
                 AddPart(childPart);
-                partsList.Add(childPart);
+                if (!partsList.Contains(part)) partsList.Add(childPart);
             }
         }
         SetMass();

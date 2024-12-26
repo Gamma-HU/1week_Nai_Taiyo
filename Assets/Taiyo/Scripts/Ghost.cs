@@ -28,7 +28,7 @@ public class Ghost : MonoBehaviour
         if (collision.gameObject.GetComponent<Part>() && collision.gameObject != partParent.gameObject)
         {
             Part part = collision.gameObject.GetComponent<Part>();
-            if (partParent is Part_Frame || part is Part_Frame) return;
+            if (!part.isConected || partParent is Part_Frame || part is Part_Frame) return;
             else isCollide = true; //フレーム同士orパーツ同士で接触している場合
         }
     }
@@ -38,7 +38,7 @@ public class Ghost : MonoBehaviour
         if (collision.gameObject.GetComponent<Part>() && collision.gameObject != partParent.gameObject)
         {
             Part part = collision.gameObject.GetComponent<Part>();
-            if (partParent is Part_Frame || part is Part_Frame) return;
+            if (!part.isConected || partParent is Part_Frame || part is Part_Frame) return;
             else isCollide = false;
         }
     }
@@ -48,7 +48,7 @@ public class Ghost : MonoBehaviour
         if (collision.gameObject.GetComponent<Part>() && collision.gameObject != partParent.gameObject)
         {
             Part part = collision.gameObject.GetComponent<Part>();
-            if (partParent is Part_Frame || part is Part_Frame) return;
+            if (!part.isConected || partParent is Part_Frame || part is Part_Frame) return;
             else isCollide = true; //フレーム同士orパーツ同士で接触している場合
         }
     }
