@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     bool inputActionDown;
 
     List<Part> partsList = new List<Part>();
+    public List<Part> PartsList => partsList;
 
     Vector2 velocityPrev;
     float angularVelocityPrev;
@@ -31,7 +32,12 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
 
-        SetParts();
+    }
+
+    void Start()
+    {
+        partsList.Clear();
+        partsList.AddRange(partFolder.GetComponentsInChildren<Part>());
 
         SetMass();
     }
@@ -50,7 +56,6 @@ public class Player : MonoBehaviour
         CorrectDirection();
         DoHoldAction();
         DoPushAction();
-
 
         Friction();
 
@@ -77,19 +82,21 @@ public class Player : MonoBehaviour
         inputActionDown = false;
     }
 
-    public void SetParts()
-    {
-        partsList.Clear();
-        //子オブジェクトのPartを取得
-        foreach (Part part in partFolder.GetComponentsInChildren<Part>())
+    /*
+        public void SetParts()
         {
-            partsList.Add(part);
+            partsList.Clear();
+            //子オブジェクトのPartを取得
+            foreach (Part part in partFolder.GetComponentsInChildren<Part>())
+            {
+                partsList.Add(part);
 
+            }
+
+            SetMass();
+            SetAngleCorrectionForce();
         }
-
-        SetMass();
-        SetAngleCorrectionForce();
-    }
+        */
 
     void SetMass()
     {
@@ -124,11 +131,40 @@ public class Player : MonoBehaviour
 
     public void AddPart(Part part)
     {
-        part.transform.SetParent(partFolder);
-        SetParts();
+        if (!partsList.Contains(part)) partsList.Add(part);
+        else return;
+
+        if (part is Part_Frame)
+        {
+            Part_Frame part_Frame = (Part_Frame)part;
+            foreach (Part childPart in part_Frame.connectedParts)
+            {
+                AddPart(childPart);
+                if (!partsList.Contains(part)) partsList.Add(childPart);
+            }
+        }
         SetMass();
         SetAngleCorrectionForce();
     }
+
+    public void RemovePart(Part part)
+    {
+        partsList.Remove(part);
+        if (part is Part_Frame)
+        {
+            Part_Frame part_Frame = (Part_Frame)part;
+            foreach (Part childPart in part_Frame.connectedParts)
+            {
+                RemovePart(childPart);
+                partsList.Remove(childPart);
+            }
+        }
+
+        SetMass();
+        SetAngleCorrectionForce();
+    }
+
+
 
     public void StartConstructMode()
     {
@@ -141,7 +177,7 @@ public class Player : MonoBehaviour
 
         foreach (Part part in partFolder.GetComponentsInChildren<Part>())
         {
-            GameManager.instance.SetConstructingParts(part);
+            ConstructManager.instance.SetConstructingParts(part);
         }
     }
 
