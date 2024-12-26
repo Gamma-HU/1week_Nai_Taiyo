@@ -43,6 +43,7 @@ public class ConnectPoint : MonoBehaviour
     {
         isConected = false;
         targetConnectPoint.isConected = false;
+        targetConnectPoint.isParent = false;
         targetConnectPoint.targetConnectPoint = null;
         targetConnectPoint = null;
 
