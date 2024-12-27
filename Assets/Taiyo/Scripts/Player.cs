@@ -8,7 +8,9 @@ public class Player : MonoBehaviour
 {
     [SerializeField] float frictionRatio;
     [SerializeField] float frictionAngularRatio;
-    [SerializeField] float angleCorrectionForce;
+    [SerializeField] float angleCorrectionRatio;
+    float angleCorrectionForceRight;
+    float angleCorrectionForceLeft;
 
     [SerializeField] Transform partFolder;
 
@@ -26,6 +28,24 @@ public class Player : MonoBehaviour
 
     Vector2 velocityPrev;
     float angularVelocityPrev;
+
+    void OnDrawGizmos()
+    {
+        if (rb != null)
+        {
+            // ギズモの色を設定
+            Gizmos.color = Color.red;
+
+            // Rigidbody2Dの重心のワールド座標
+            Vector2 centerOfMassWorld = rb.worldCenterOfMass;
+
+            // 重心の位置に小さな球を描画
+            Gizmos.DrawSphere(centerOfMassWorld, 0.1f);
+
+            // オブジェクトの位置から重心まで線を描画
+            Gizmos.DrawLine(transform.position, centerOfMassWorld);
+        }
+    }
 
 
     void Awake()
@@ -102,31 +122,47 @@ public class Player : MonoBehaviour
     {
         //各部品の質量を合計してプレイヤーの質量にする
         float mass = 0;
-        Vector2 massCenter = Vector2.zero;
+        Vector3 massCenter = Vector3.zero;
         foreach (Part part in partsList)
         {
             mass += part.mass;
-            massCenter += (Vector2)part.transform.localPosition * part.mass;
+            massCenter += part.transform.position * part.mass;
         }
         rb.mass = mass;
 
         //重心を設定
-        rb.centerOfMass = massCenter / mass;
+        rb.centerOfMass = transform.InverseTransformPoint(massCenter / mass);
     }
 
     void SetAngleCorrectionForce()
     {
-        float force = 0;
+        float forceRight = 0;
+        float forceLeft = 0;
+
         foreach (Part part in partsList)
         {
             if (part is Part_Power)
             {
                 Part_Power part_Power = (Part_Power)part;
-                force += part_Power.inputEffectRatio * 10f;
+                Vector2 powerDirection = part_Power.transform.rotation * part_Power.powerVec;
+                Vector2 relativePosition = part_Power.transform.position - (Vector3)rb.worldCenterOfMass; //重心からの相対位置
+                Vector2 verticalComponent = powerDirection - Vector2.Dot(powerDirection, relativePosition) / relativePosition.magnitude * relativePosition.normalized; //力の方向と重心からの相対位置の内積を取り、重心からの相対位置の方向に垂直な成分を取得
+                //反時計回りが正のトルクの大きさ
+                float torque = -1 * Mathf.Sign(Vector3.Cross(relativePosition, verticalComponent).z) * verticalComponent.magnitude * part_Power.power; //外積を取りトルクを計算
+
+                if (torque > 0)
+                {
+                    forceLeft += torque;
+                }
+                else
+                {
+                    forceRight += -torque;
+                }
             }
 
         }
-        angleCorrectionForce = force;
+        angleCorrectionForceLeft = forceLeft;
+        angleCorrectionForceRight = forceRight;
     }
 
     public void AddPart(Part part)
@@ -175,7 +211,7 @@ public class Player : MonoBehaviour
 
         rb.bodyType = RigidbodyType2D.Kinematic;
 
-        foreach (Part part in partFolder.GetComponentsInChildren<Part>())
+        foreach (Part part in partsList)
         {
             ConstructManager.instance.SetConstructingParts(part);
         }
@@ -187,6 +223,7 @@ public class Player : MonoBehaviour
         {
             //部品のRigidbody2Dを削除
             if (part.GetComponent<Rigidbody2D>()) Destroy(part.GetComponent<Rigidbody2D>());
+            part.GetComponent<Collider2D>().isTrigger = false;
         }
 
         rb.bodyType = RigidbodyType2D.Dynamic;
@@ -240,9 +277,10 @@ public class Player : MonoBehaviour
             }
 
             //if (Mathf.Abs(diff) < 30) diff = math.sign(diff) * 30; //補正する力は30~180の係数で変化
-            if (Mathf.Abs(diff) < 10) diff = 0;
+            Debug.Log(diff);
 
-            rb.AddTorque(math.sign(diff) * rb.mass * angleCorrectionForce);
+            if (diff > 10) rb.AddTorque((angleCorrectionForceRight + 1) * rb.mass * angleCorrectionRatio);
+            else if (diff < -10) rb.AddTorque(-(angleCorrectionForceLeft + 1) * rb.mass * angleCorrectionRatio);
         }
     }
 
