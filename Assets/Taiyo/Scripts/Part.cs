@@ -63,13 +63,7 @@ public class Part : MonoBehaviour
             damageParameter.collisionCount += 1;
             if(this.HP <= 0)
             {
-                foreach(ConnectPoint connectPoint in connectPoints)
-                {
-                    if(connectPoint.isParent == false)
-                    {
-                        connectPoint.QuitConnect();
-                    }
-                }
+                DeattachFromParent();
             }
         }
     }
@@ -229,6 +223,26 @@ public class Part : MonoBehaviour
         gohst.SetActive(false);
     }
 
+    public void DeattachFromParent()
+    {
+        isConected = false;
+        GameManager.instance.player.RemovePart(this);
+        PartSpawner.instance.AddFloatingPart(this);
+
+        foreach (ConnectPoint connectPoint in connectPoints)
+        {
+            if (connectPoint.isConected && !connectPoint.isParent) //子としてくっついていた場合
+            {
+                Part parentPart = connectPoint.targetConnectPoint.transform.parent.GetComponent<Part>();
+                if (!parentPart.isCockpit)
+                {
+                    parentPart.GetComponent<Part_Frame>().RemoveConnectedPart(this);
+                }
+                connectPoint.QuitConnect();
+            }
+        }
+
+    }
     (ConnectPoint, ConnectPoint) CheckConnectable()
     {
         ConnectPoint point1 = null;
