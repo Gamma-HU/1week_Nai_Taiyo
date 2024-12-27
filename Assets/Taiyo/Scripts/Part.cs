@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Part : MonoBehaviour
 {
+    [SerializeField] public float HP = 100;
     public float mass;
     //public bool isFrame;
     public bool isCockpit;
@@ -51,6 +52,26 @@ public class Part : MonoBehaviour
         }
 
 
+    }
+
+     void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "DamageSource")
+        {
+            DamageParameter damageParameter = collision.gameObject.GetComponent<DamageParameter>();
+            this.HP -= damageParameter.damage;
+            damageParameter.collisionCount += 1;
+            if(this.HP <= 0)
+            {
+                foreach(ConnectPoint connectPoint in connectPoints)
+                {
+                    if(connectPoint.isParent == false)
+                    {
+                        connectPoint.QuitConnect();
+                    }
+                }
+            }
+        }
     }
 
     void InitializeGohst()
