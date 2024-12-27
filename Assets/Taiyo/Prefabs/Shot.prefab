@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4558270482300491346}
   - component: {fileID: 7483595501440068801}
   m_Layer: 5
-  m_Name: Gohst
+  m_Name: Ghost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -137,7 +137,7 @@ RectTransform:
   - {fileID: 2673189385841376690}
   - {fileID: 2572239679713372136}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -159,6 +159,7 @@ MonoBehaviour:
   mass: 1
   isCockpit: 0
   isConstructMode: 0
+  isConected: 0
   connectPoints: []
   shotVec: {x: 0, y: 1}
   shotPower: 10

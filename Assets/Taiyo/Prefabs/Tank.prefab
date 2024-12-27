@@ -52,8 +52,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c13b83cfdc324d06abb650fbe7715f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mass: 1
+  mass: 2
+  isCockpit: 0
   isConstructMode: 0
+  isConnected: 0
+  connectPoints: []
 --- !u!212 &4760010552982807737
 SpriteRenderer:
   m_ObjectHideFlags: 0
