@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7921314739697687665}
   - component: {fileID: 5924183602013061345}
   m_Layer: 5
-  m_Name: Gohst
+  m_Name: Ghost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -162,10 +162,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9a91a26a1a404988b16aa315cf746c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mass: 0
+  mass: 3
   isCockpit: 0
   isConstructMode: 0
-  isConected: 0
+  isConnected: 0
   connectPoints: []
   connectedParts: []
 --- !u!212 &4752772885788998883
@@ -233,8 +233,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0.2
-  m_AngularDrag: 0.05
+  m_LinearDrag: 0
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:

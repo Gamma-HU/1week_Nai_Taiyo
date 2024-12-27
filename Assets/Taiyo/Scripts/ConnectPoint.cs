@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ConnectPoint : MonoBehaviour
 {
@@ -11,6 +12,18 @@ public class ConnectPoint : MonoBehaviour
     public ConnectPoint targetConnectPoint;
     public bool isParent;
 
+    Color colorNormal = new Color(1, 1, 1, 1);
+    Color colorConnected = new Color(0, 1, 0, 1);
+
+    void Awake()
+    {
+        angleList.Clear();
+        for (int i = 0; i < 8; i++)
+        {
+            angleList.Add(i * 45);
+        }
+    }
+
     public void Connect(ConnectPoint targetPoint)
     {
         isConected = true;
@@ -19,6 +32,8 @@ public class ConnectPoint : MonoBehaviour
         targetConnectPoint.isConected = true;
         targetConnectPoint.targetConnectPoint = this;
         targetConnectPoint.isParent = true;
+
+        SetColor(colorConnected);
     }
 
     public void Connect(ConnectPoint targetPoint, bool isParent)
@@ -37,16 +52,33 @@ public class ConnectPoint : MonoBehaviour
         {
             targetConnectPoint.isParent = true;
         }
+
+        SetColor(colorConnected);
     }
 
     public void QuitConnect()
     {
         isConected = false;
         targetConnectPoint.isConected = false;
+        targetConnectPoint.isParent = false;
         targetConnectPoint.targetConnectPoint = null;
         targetConnectPoint = null;
 
         isParent = false;
+
+        SetColor(colorNormal);
+    }
+
+    public void ActivateImage(bool isActive)
+    {
+        GetComponent<Image>().enabled = isActive;
+    }
+
+    public void SetColor(Color color)
+    {
+
+        GetComponent<Image>().color = color;
+
     }
 
 

@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Part : MonoBehaviour
 {
+    [SerializeField] public float HP = 100;
     public float mass;
     //public bool isFrame;
     public bool isCockpit;
@@ -13,33 +14,42 @@ public class Part : MonoBehaviour
     bool isPick;
     bool canConnect;
     public bool CanConnect => canConnect;
-    public bool isConected;
+    public bool isConnected;
 
     [SerializeField] List<ConnectPoint> connectPoints = new List<ConnectPoint>();
-    GameObject gohst;
+    GameObject ghost;
 
     ConnectPoint _connectPoint1;
     ConnectPoint _connectPoint2;
     float _angle;
 
+    Rigidbody2D rb;
 
-    void Awake()
+
+    protected virtual void Awake()
     {
-        if (GetComponent<Rigidbody2D>())
-        {
-            Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            rb.mass = mass;
-            rb.drag = 0.2f;
-            rb.angularDrag = 0.1f;
-            rb.gravityScale = 0;
-            rb.isKinematic = false;
-
-        }
-
-        InitializeGohst();
-
         connectPoints.Clear();
         connectPoints.AddRange(GetComponentsInChildren<ConnectPoint>());
+
+        foreach (ConnectPoint connectPoint in connectPoints)
+        {
+            connectPoint.ActivateImage(false);
+        }
+
+        if (isCockpit) return;
+
+        if (!GetComponent<Rigidbody2D>()) gameObject.AddComponent<Rigidbody2D>(); //Rigidbody2Dを追加
+        rb = GetComponent<Rigidbody2D>();
+        rb.mass = mass;
+        rb.drag = 0.2f;
+        rb.angularDrag = 0.1f;
+        rb.gravityScale = 0;
+        rb.isKinematic = false;
+
+        InitializeGhost();
+
+
+
     }
 
     void Update()
@@ -53,36 +63,50 @@ public class Part : MonoBehaviour
 
     }
 
-    void InitializeGohst()
+     void OnCollisionEnter2D(Collision2D collision)
     {
-        gohst = transform.Find("Gohst").gameObject;
-        gohst.GetComponent<SpriteRenderer>().sprite = GetComponent<SpriteRenderer>().sprite;
-        gohst.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.3f);  //透明度30%
+        if (collision.gameObject.tag == "DamageSource")
+        {
+            DamageParameter damageParameter = collision.gameObject.GetComponent<DamageParameter>();
+            this.HP -= damageParameter.damage;
+            damageParameter.collisionCount += 1;
+            if(this.HP <= 0)
+            {
+                DeattachFromParent();
+            }
+        }
+    }
+
+    void InitializeGhost()
+    {
+        ghost = transform.Find("Ghost").gameObject;
+        ghost.GetComponent<SpriteRenderer>().sprite = GetComponent<SpriteRenderer>().sprite;
+        ghost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.3f);  //透明度30%
 
         if (GetComponent<BoxCollider2D>())
         {
-            gohst.AddComponent<BoxCollider2D>();
+            ghost.AddComponent<BoxCollider2D>();
         }
         else if (GetComponent<CircleCollider2D>())
         {
-            gohst.AddComponent<CircleCollider2D>();
+            ghost.AddComponent<CircleCollider2D>();
         }
         else if (GetComponent<PolygonCollider2D>())
         {
-            gohst.AddComponent<PolygonCollider2D>();
+            ghost.AddComponent<PolygonCollider2D>();
         }
         else if (GetComponent<CapsuleCollider2D>())
         {
-            gohst.AddComponent<CapsuleCollider2D>();
+            ghost.AddComponent<CapsuleCollider2D>();
         }
         else if (GetComponent<EdgeCollider2D>())
         {
-            gohst.AddComponent<EdgeCollider2D>();
+            ghost.AddComponent<EdgeCollider2D>();
         }
 
-        gohst.GetComponent<Collider2D>().CopyCollider2D(GetComponent<Collider2D>()); //コライダーをコピー
-        gohst.GetComponent<Collider2D>().isTrigger = true;
-        gohst.SetActive(false);
+        ghost.GetComponent<Collider2D>().CopyCollider2D(GetComponent<Collider2D>()); //コライダーをコピー
+        ghost.GetComponent<Collider2D>().isTrigger = true;
+        ghost.SetActive(false);
 
 
     }
@@ -92,26 +116,50 @@ public class Part : MonoBehaviour
     public void StartConstructMode() //rigidbodyを持つ、Kinematic、isTriggerオンの状態にする
     {
         isConstructMode = true;
-        GetComponent<Collider2D>().isTrigger = true;
+
+        foreach (ConnectPoint connectPoint in connectPoints)
+        {
+            connectPoint.ActivateImage(true);
+        }
+
+        if (isCockpit) return;
+
         if (!GetComponent<Rigidbody2D>()) gameObject.AddComponent<Rigidbody2D>(); //Rigidbody2Dを追加
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        rb.isKinematic = true;
+        rb = GetComponent<Rigidbody2D>();
+        rb.mass = mass;
+        rb.drag = 0.2f;
+        rb.angularDrag = 0.1f;
+        rb.gravityScale = 0;
+        rb.isKinematic = isConnected;
+        GetComponent<Collider2D>().isTrigger = isConnected;
+
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0;
+
     }
 
     public void EndConstructMode()
     {
         isConstructMode = false;
-        GetComponent<Collider2D>().isTrigger = false;
-        if (GetComponent<Rigidbody2D>()) GetComponent<Rigidbody2D>().isKinematic = false;
+        if (rb) //playerにくっついていないとき
+        {
+            rb.isKinematic = isConnected;
+            GetComponent<Collider2D>().isTrigger = isConnected;
+        }
+
+        foreach (ConnectPoint connectPoint in connectPoints)
+        {
+            connectPoint.ActivateImage(false);
+        }
     }
 
     public void Connect()
     {
         tag = "Part";
         transform.rotation *= Quaternion.Euler(0, 0, _angle);
+        float z = transform.position.z;
         transform.position += _connectPoint2.transform.position - _connectPoint1.transform.position;
+        transform.position = new Vector3(transform.position.x, transform.position.y, z);
 
         Part targetPart = _connectPoint2.transform.parent.GetComponent<Part>();
 
@@ -128,16 +176,24 @@ public class Part : MonoBehaviour
         Player player = GameManager.instance.player;
         player.AddPart(this);
 
-        isConected = true;
+        isConnected = true;
         isPick = false;
         canConnect = false;
-        gohst.SetActive(false);
+        ghost.SetActive(false);
+
+
+        GetComponent<Collider2D>().isTrigger = true;
+        rb.isKinematic = true;
     }
 
     public void Pick()
     {
+
+        GetComponent<Collider2D>().isTrigger = false;
+        rb.isKinematic = true;
+
         isPick = true;
-        isConected = false;
+        isConnected = false;
         GameManager.instance.player.RemovePart(this);
         PartSpawner.instance.AddFloatingPart(this);
 
@@ -160,7 +216,7 @@ public class Part : MonoBehaviour
     void Picking()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = mousePos;
+        transform.position = new Vector3(mousePos.x, mousePos.y, transform.position.z);
 
         if (Input.GetMouseButton(1))
         {
@@ -175,10 +231,10 @@ public class Part : MonoBehaviour
         }
         else
         {
-            gohst.SetActive(false);
+            ghost.SetActive(false);
         }
 
-        if (point1 && point2 && !gohst.GetComponent<Ghost>().IsCollide)
+        if (point1 && point2 && !ghost.GetComponent<Ghost>().IsCollide)
         {
             canConnect = true;
         }
@@ -194,20 +250,42 @@ public class Part : MonoBehaviour
         PartSpawner.instance.AddFloatingPart(this);
         tag = "Untagged";
 
-        //if (!GetComponent<Rigidbody2D>()) gameObject.AddComponent<Rigidbody2D>(); //Rigidbody2Dを追加
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        rb.mass = mass;
-        rb.drag = 0.2f;
-        rb.angularDrag = 0.1f;
-        rb.gravityScale = 0;
-        rb.isKinematic = true;
+        /*
+                if (!GetComponent<Rigidbody2D>()) gameObject.AddComponent<Rigidbody2D>(); //Rigidbody2Dを追加
+                Rigidbody2D rb = GetComponent<Rigidbody2D>();
+                rb.mass = mass;
+                rb.drag = 0.2f;
+                rb.angularDrag = 0.1f;
+                rb.gravityScale = 0;
+                */
 
 
+        rb.isKinematic = false;
         isPick = false;
         canConnect = false;
-        gohst.SetActive(false);
+        ghost.SetActive(false);
     }
 
+    public void DeattachFromParent()
+    {
+        isConnected = false;
+        GameManager.instance.player.RemovePart(this);
+        PartSpawner.instance.AddFloatingPart(this);
+
+        foreach (ConnectPoint connectPoint in connectPoints)
+        {
+            if (connectPoint.isConected && !connectPoint.isParent) //子としてくっついていた場合
+            {
+                Part parentPart = connectPoint.targetConnectPoint.transform.parent.GetComponent<Part>();
+                if (!parentPart.isCockpit)
+                {
+                    parentPart.GetComponent<Part_Frame>().RemoveConnectedPart(this);
+                }
+                connectPoint.QuitConnect();
+            }
+        }
+
+    }
     (ConnectPoint, ConnectPoint) CheckConnectable()
     {
         ConnectPoint point1 = null;
@@ -291,17 +369,17 @@ public class Part : MonoBehaviour
 
         _angle = minAngle;
 
-        gohst.SetActive(true);
-        gohst.transform.position = transform.position;
+        ghost.SetActive(true);
+        ghost.transform.position = transform.position;
 
         //connectPointを中心に回転
-        Vector3 direction = gohst.transform.position - myPoint.transform.position;
+        Vector3 direction = ghost.transform.position - myPoint.transform.position;
         direction = Quaternion.Euler(0, 0, minAngle) * direction;
-        gohst.transform.position = myPoint.transform.position + direction;
-        gohst.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, minAngle);
+        ghost.transform.position = myPoint.transform.position + direction;
+        ghost.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, minAngle);
 
         //targetPointに移動
-        gohst.transform.position += targetPoint.transform.position - myPoint.transform.position;
+        ghost.transform.position += targetPoint.transform.position - myPoint.transform.position;
     }
 
 }

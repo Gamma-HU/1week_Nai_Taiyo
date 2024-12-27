@@ -38,6 +38,11 @@ public class ConstructManager : MonoBehaviour
 
     void Update()
     {
+        if (!isConstructMode)
+        {
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             PickPart();
@@ -105,7 +110,7 @@ public class ConstructManager : MonoBehaviour
         if (hit.collider != null && hit.collider.gameObject.GetComponent<Part>())
         {
             Part part = hit.collider.gameObject.GetComponent<Part>();
-            if (isConstructMode)
+            if (part.isConstructMode)
             {
                 if (part.isCockpit)
                 {
