@@ -23,3 +23,20 @@ MonoBehaviour:
     fireRate: 5
     fireCooldown: 1
     text_explaination: 
+  - enemyType: 1
+    enemyPrefab: {fileID: 5093249813986543570, guid: cbebf53b7e3b94fcd997f4e5f4d3787b, type: 3}
+    name: NormalEnemy
+    hp: 1
+    attack: 1
+    bulletPrefab: {fileID: 1825426770083038263, guid: 2c61aa934acd34cd6b1d575194270e81, type: 3}
+    bulletSpeed: 5
+    fireRate: 5
+    fireCooldown: 1
+    text_explaination: 
+  weightListPerWave:
+  - weights:
+    - 1
+    - 0
+  - weights:
+    - 1
+    - 1

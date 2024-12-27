@@ -49,6 +49,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6a07e96269104afebc35eefa07d1eb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPos: {fileID: 0}
-  radius_min: 5
-  radius_max: 5
+  playerGameObj: {fileID: 0}
+  max_distance: 1000
+  baseEnemiesNum: 2
+  enemySpawnInterval: 10
+  difficultyScalingFactor: 0.75
+  maxWaves: 10
+  currentWave: 1

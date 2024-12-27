@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {  
-    private string name;
+    private string enemy_name;
     private int hp;
     private int attack;
     private GameObject bulletPrefab; // 弾のPrefab
@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
     
     public void Initialize(EnemyData enemyData)
     {
-        name = enemyData.name;
+        enemy_name = enemyData.name;
         hp = enemyData.hp;
         attack = enemyData.attack;
         bulletPrefab = enemyData.bulletPrefab;
