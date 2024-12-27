@@ -1,31 +1,32 @@
 using System;
+using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject playerPos;
     [SerializeField] private float radius_min = 60f;
-    [SerializeField] private float radius_max = 80f;
-    [SerializeField] private float max_distance = 1000f;
-    [SerializeField] private int baseEnemiesNum = 8;
-    [SerializeField] private float enemiesPerSecond = 0.5f;
-    [SerializeField] private float timeBetweenWaves = 5f;
-    [SerializeField] private float difficultyScalingFactor = 0.75f;
-
-    [Header("Events")] public static UnityEvent onEnemyDestroy = new UnityEvent();
+    [SerializeField] private float radius_max = 80f; //プレイヤーのパーツから推定するようにする
+    [Header("ゴールまでの距離")] [SerializeField] private float max_distance = 1000f; //ゴールまでの距離
+    [Header("Wave1で1回のスポーンで湧く敵の数")] [SerializeField] private int baseEnemiesNum = 8;
+    [Header("スポーンの間隔")] [SerializeField] private float enemySpawnInterval = 0.5f; // スポーン間隔
+    [Header("Wave進行による難易度上昇率")]　[SerializeField] private float difficultyScalingFactor = 0.75f;
+    [Header("Waveの数")]　[SerializeField] private int maxWaves = 10;
 
     private EnemySpawnCaluculateLib _enemySpawnCaluculateLib;
-    private int currentWave = 0;
+    private int currentWave = 1;
     private float timeSinceLastSpawn = 0f;
-    private int enemyAlive;
-    //private int enemiesLeftToSpawn;
     private bool isSpawning = false;
+    private float current_distance = 0f; // スタートから現在地までの距離. この値に応じてcurrentWaveを加算
+    private Vector3 prev_playerPos;
+    private Vector3 current_playerPos;
 
     private void Awake()
     {
         _enemySpawnCaluculateLib = new EnemySpawnCaluculateLib();
-        onEnemyDestroy.AddListener(EnemyDestroyed);
     }
 
     private void Update()
@@ -34,48 +35,66 @@ public class EnemySpawner : MonoBehaviour
         
         timeSinceLastSpawn += Time.deltaTime;
 
-        if (timeSinceLastSpawn >= (1f / enemiesPerSecond))
+        if (timeSinceLastSpawn >= enemySpawnInterval)
         {
             Spawn();
-            enemyAlive++;
             timeSinceLastSpawn = 0f;
+        }
+
+        current_distance = CalDistance();
+        if (current_distance >= (max_distance / maxWaves) * (currentWave + 1))
+        {
+            currentWave++;
         }
     }
 
-    private void StartWave()
+    [ContextMenu("StartWave")]
+    public void StartWave()
     {
         isSpawning = true;
-        enemiesLeftToSpawn = EnemiesPerWave();
+        prev_playerPos = playerPos.GetComponent<RectTransform>().anchoredPosition;
     }
 
     private int EnemiesPerWave()
     {
         return Mathf.RoundToInt(baseEnemiesNum * Mathf.Pow(currentWave, difficultyScalingFactor));
     }
-
-    private void EnemyDestroyed()
-    {
-        enemyAlive--;
-    }
     
     [ContextMenu("Spawn")]
     public void Spawn()
     {
-        var enemyData_Normal = EnemyDataScritableObject.Entity.GetEnemyData(EnemyData.EnemyType.NORMAL);
+        int numberToSpawn = EnemiesPerWave();
+        Debug.Log("Spawning " + numberToSpawn + " enemies");
         
-        GameObject EnemyObj = Instantiate(enemyData_Normal.enemyPrefab, this.gameObject.transform);
-        Vector2 spawnPos = _enemySpawnCaluculateLib.SpawnRandomPos(playerPos.transform, radius_min, radius_max);
-        Debug.Log(spawnPos);
-        EnemyObj.GetComponent<RectTransform>().anchoredPosition = spawnPos;
+        current_playerPos = playerPos.GetComponent<RectTransform>().anchoredPosition;
+        radius_min = Vector3.Distance(prev_playerPos, current_playerPos);
         
-        EnemyObj.GetComponent<Enemy>().Initialize(enemyData_Normal);
+        for (int i = 0; i < numberToSpawn; i++)
+        {
+            var enemyData_Normal = EnemyDataScritableObject.Entity.GetEnemyData(EnemyData.EnemyType.NORMAL);
+        
+            GameObject EnemyObj = Instantiate(enemyData_Normal.enemyPrefab, this.gameObject.transform);
+            Vector2 spawnPos = _enemySpawnCaluculateLib.SpawnRandomPos(current_playerPos, radius_min, radius_max);
+            EnemyObj.GetComponent<RectTransform>().anchoredPosition = spawnPos - this.gameObject.GetComponent<RectTransform>().anchoredPosition;
+            EnemyObj.GetComponent<Enemy>().Initialize(enemyData_Normal);
+            
+            Debug.Log($"playerPos: {playerPos.GetComponent<RectTransform>().anchoredPosition}");
+            Debug.Log($"spawnPos: {spawnPos}");
+        }
+        
+        prev_playerPos = current_playerPos;
     }
 
-    [ContextMenu("TestCalDistance")]
-    public void TestCalDistance()
+    private float CalDistance()
     {
         float dist = Vector3.Distance(this.gameObject.GetComponent<RectTransform>().anchoredPosition, playerPos.GetComponent<RectTransform>().anchoredPosition);
-        Debug.Log(dist);
+        return dist;
+    }
+
+    [ContextMenu("CurrentWave")]
+    public void CurrentWave()
+    {
+        Debug.Log("Current wave: " + currentWave);
     }
 
 }

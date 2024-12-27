@@ -1847,10 +1847,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c13b83cfdc324d06abb650fbe7715f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HP: 100
   mass: 1
   isCockpit: 1
   isConstructMode: 0
-  isConected: 0
+  isConnected: 0
   connectPoints: []
 --- !u!1001 &1134310409
 PrefabInstance:
@@ -2592,7 +2593,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frictionRatio: 0.99
   frictionAngularRatio: 0.9
-  angleCorrectionForce: 10
+  angleCorrectionRatio: 0
   partFolder: {fileID: 1020067562}
 --- !u!1 &1548099116
 GameObject:
@@ -4402,6 +4403,22 @@ PrefabInstance:
       propertyPath: playerPos
       value: 
       objectReference: {fileID: 1452081877}
+    - target: {fileID: 2490028004796252124, guid: dddb9d5759ce4450d9cf4f4ea981c986, type: 3}
+      propertyPath: radius_max
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 2490028004796252124, guid: dddb9d5759ce4450d9cf4f4ea981c986, type: 3}
+      propertyPath: radius_min
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2490028004796252124, guid: dddb9d5759ce4450d9cf4f4ea981c986, type: 3}
+      propertyPath: baseEnemiesNum
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2490028004796252124, guid: dddb9d5759ce4450d9cf4f4ea981c986, type: 3}
+      propertyPath: enemySpawnInterval
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4912173257208372805, guid: dddb9d5759ce4450d9cf4f4ea981c986, type: 3}
       propertyPath: m_Name
       value: Spawner
