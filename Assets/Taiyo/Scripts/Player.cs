@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class Player : MonoBehaviour
     float angleCorrectionForceLeft;
 
     [SerializeField] Transform partFolder;
+
+    [SerializeField] Slider fuelSlider;
 
 
     Rigidbody2D rb;
@@ -26,8 +29,19 @@ public class Player : MonoBehaviour
     List<Part> partsList = new List<Part>();
     public List<Part> PartsList => partsList;
 
+
+    bool isConstructMode;
     Vector2 velocityPrev;
     float angularVelocityPrev;
+    float fuelConsumptionSum;
+
+    float fuelMax;
+    float fuel;
+    [SerializeField] float fuelRecoverySpeed; //燃料回復速度
+    float fuelUsableMin = 1f; //燃料がこれ以下になると動力パーツが動かなくなる
+    bool isFuelEmpty;
+    Color fuelColorNormal;
+    Color fuelColorEmpty = new Color(1, 0, 0, 1);
 
     void OnDrawGizmos()
     {
@@ -51,7 +65,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-
+        fuelColorNormal = fuelSlider.transform.GetChild(1).GetChild(0).GetComponent<Image>().color;
     }
 
     void Start()
@@ -67,13 +81,19 @@ public class Player : MonoBehaviour
     {
         SetInput();
 
-
+        if (!isConstructMode && (inputVec.magnitude < deadZone || isFuelEmpty)) //入力がないとき or 燃料が空のときは回復
+        {
+            RecoveryFuel();
+        }
     }
 
     void FixedUpdate()
     {
-        DoPower();
-        CorrectDirection();
+        if (!isFuelEmpty)
+        {
+            DoPower();
+            CorrectDirection();
+        }
         DoHoldAction();
         DoPushAction();
 
@@ -102,21 +122,108 @@ public class Player : MonoBehaviour
         inputActionDown = false;
     }
 
-    /*
-        public void SetParts()
+
+    public void AddPart(Part part)
+    {
+        if (!partsList.Contains(part)) partsList.Add(part);
+        else return;
+
+        if (part is Part_Frame)
         {
-            partsList.Clear();
-            //子オブジェクトのPartを取得
-            foreach (Part part in partFolder.GetComponentsInChildren<Part>())
+            Part_Frame part_Frame = (Part_Frame)part;
+            foreach (Part childPart in part_Frame.connectedParts)
             {
-                partsList.Add(part);
-
+                AddPart(childPart);
+                if (!partsList.Contains(part)) partsList.Add(childPart);
             }
-
-            SetMass();
-            SetAngleCorrectionForce();
         }
-        */
+        SetMass();
+        SetPartPowerParameters();
+        SetFuelMax();
+    }
+
+    public void RemovePart(Part part)
+    {
+        partsList.Remove(part);
+        if (part is Part_Frame)
+        {
+            Part_Frame part_Frame = (Part_Frame)part;
+            foreach (Part childPart in part_Frame.connectedParts)
+            {
+                RemovePart(childPart);
+                partsList.Remove(childPart);
+            }
+        }
+
+        SetMass();
+        SetPartPowerParameters();
+        SetFuelMax();
+    }
+
+
+
+    public void StartConstructMode()
+    {
+        velocityPrev = rb.velocity;
+        angularVelocityPrev = rb.angularVelocity;
+        rb.velocity = Vector2.zero;
+        rb.angularVelocity = 0;
+
+        rb.bodyType = RigidbodyType2D.Kinematic;
+
+        foreach (Part part in partsList)
+        {
+            ConstructManager.instance.SetConstructingParts(part);
+        }
+
+        isConstructMode = true;
+    }
+
+    public bool CanEndConstructMode()
+    {
+        bool hasPower = false;
+        bool hasTank = false;
+
+        foreach (Part part in partsList)
+        {
+            if (part is Part_Frame)
+            {
+                hasPower = true;
+                break;
+            }
+            else if (part is Part_Tank)
+            {
+                hasTank = true;
+            }
+        }
+
+        if (!hasPower) GameManager.instance.DisplayMessage("動力パーツがありません");
+        if (!hasTank) GameManager.instance.DisplayMessage("燃料タンクがありません");
+
+        return hasPower && hasTank;
+    }
+
+    public void EndConstructMode()
+    {
+        foreach (Part part in partsList)
+        {
+            //部品のRigidbody2Dを削除
+            if (part.GetComponent<Rigidbody2D>()) Destroy(part.GetComponent<Rigidbody2D>());
+            part.GetComponent<Collider2D>().isTrigger = false;
+        }
+
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.velocity = velocityPrev;
+        rb.angularVelocity = angularVelocityPrev;
+
+        if (fuel > fuelMax)
+        {
+            fuel = fuelMax;
+        }
+
+        isConstructMode = false;
+    }
+
 
     void SetMass()
     {
@@ -134,10 +241,12 @@ public class Player : MonoBehaviour
         rb.centerOfMass = transform.InverseTransformPoint(massCenter / mass);
     }
 
-    void SetAngleCorrectionForce()
+    void SetPartPowerParameters()
     {
         float forceRight = 0;
         float forceLeft = 0;
+
+        float fuelSum = 0;
 
         foreach (Part part in partsList)
         {
@@ -158,78 +267,31 @@ public class Player : MonoBehaviour
                 {
                     forceRight += -torque;
                 }
+
+                fuelSum += part_Power.fuelConsumption;
             }
 
         }
         angleCorrectionForceLeft = forceLeft;
         angleCorrectionForceRight = forceRight;
+
+        fuelConsumptionSum = fuelSum;
     }
 
-    public void AddPart(Part part)
+    public void SetFuelMax()
     {
-        if (!partsList.Contains(part)) partsList.Add(part);
-        else return;
-
-        if (part is Part_Frame)
-        {
-            Part_Frame part_Frame = (Part_Frame)part;
-            foreach (Part childPart in part_Frame.connectedParts)
-            {
-                AddPart(childPart);
-                if (!partsList.Contains(part)) partsList.Add(childPart);
-            }
-        }
-        SetMass();
-        SetAngleCorrectionForce();
-    }
-
-    public void RemovePart(Part part)
-    {
-        partsList.Remove(part);
-        if (part is Part_Frame)
-        {
-            Part_Frame part_Frame = (Part_Frame)part;
-            foreach (Part childPart in part_Frame.connectedParts)
-            {
-                RemovePart(childPart);
-                partsList.Remove(childPart);
-            }
-        }
-
-        SetMass();
-        SetAngleCorrectionForce();
-    }
-
-
-
-    public void StartConstructMode()
-    {
-        velocityPrev = rb.velocity;
-        angularVelocityPrev = rb.angularVelocity;
-        rb.velocity = Vector2.zero;
-        rb.angularVelocity = 0;
-
-        rb.bodyType = RigidbodyType2D.Kinematic;
-
+        fuelMax = 0;
         foreach (Part part in partsList)
         {
-            ConstructManager.instance.SetConstructingParts(part);
+            if (part is Part_Tank)
+            {
+                Part_Tank part_Tank = (Part_Tank)part;
+                fuelMax += part_Tank.volume;
+            }
         }
+        fuel = fuelMax;
     }
 
-    public void EndConstructMode()
-    {
-        foreach (Part part in partsList)
-        {
-            //部品のRigidbody2Dを削除
-            if (part.GetComponent<Rigidbody2D>()) Destroy(part.GetComponent<Rigidbody2D>());
-            part.GetComponent<Collider2D>().isTrigger = false;
-        }
-
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        rb.velocity = velocityPrev;
-        rb.angularVelocity = angularVelocityPrev;
-    }
 
     void Friction()
     {
@@ -248,7 +310,11 @@ public class Player : MonoBehaviour
                 if (part is Part_Power)
                 {
                     Part_Power part_Power = (Part_Power)part;
+
+
                     part_Power.AddPower(rb, inputVec);
+
+                    UseFuel(part_Power.fuelConsumption);
                 }
             }
         }
@@ -279,8 +345,8 @@ public class Player : MonoBehaviour
             //if (Mathf.Abs(diff) < 30) diff = math.sign(diff) * 30; //補正する力は30~180の係数で変化
             Debug.Log(diff);
 
-            if (diff > 10) rb.AddTorque((angleCorrectionForceRight + 1) * rb.mass * angleCorrectionRatio);
-            else if (diff < -10) rb.AddTorque(-(angleCorrectionForceLeft + 1) * rb.mass * angleCorrectionRatio);
+            if (diff > 1) rb.AddTorque((angleCorrectionForceRight + 1) * rb.mass * angleCorrectionRatio);
+            else if (diff < -1) rb.AddTorque(-(angleCorrectionForceLeft + 1) * rb.mass * angleCorrectionRatio);
         }
     }
 
@@ -313,5 +379,40 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    public void UseFuel(float speed)
+    {
+        fuel -= speed * Time.deltaTime;
+        if (fuel < 0)
+        {
+            fuel = 0;
+            isFuelEmpty = true;
+
+            fuelSlider.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = fuelColorEmpty;
+        }
+
+        fuelSlider.value = fuel / fuelMax;
+    }
+
+    public void RecoveryFuel()
+    {
+        if (fuel < fuelMax) fuel += fuelRecoverySpeed * Time.deltaTime;
+
+        //燃料が空の状態から燃料が回復した場合（消費燃料が多いほど復帰は遅い）
+        if (isFuelEmpty && (fuel > fuelUsableMin * fuelConsumptionSum || fuel == fuelMax))
+        {
+            isFuelEmpty = false;
+            fuelSlider.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = fuelColorNormal;
+        }
+
+        if (fuel > fuelMax) fuel = fuelMax;
+
+        if (fuelMax == 0) fuelSlider.value = 0;
+        else fuelSlider.value = fuel / fuelMax;
+    }
+
+
+
+
 
 }

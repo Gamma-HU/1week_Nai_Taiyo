@@ -32,7 +32,16 @@ public class PartSpawner : MonoBehaviour
 
     public void AddFloatingPart(Part part)
     {
+        if (floatingPartList.Contains(part))
+        {
+            return;
+        }
         floatingPartList.Add(part);
         part.transform.SetParent(floatingPartFolder);
+    }
+
+    public void RemoveFloatingPart(Part part)
+    {
+        floatingPartList.Remove(part);
     }
 }
