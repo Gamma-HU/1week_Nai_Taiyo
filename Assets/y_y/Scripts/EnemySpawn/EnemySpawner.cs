@@ -7,7 +7,6 @@ using UnityEngine.Serialization;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject playerGameObj;
     [Header("ゴールまでの距離")] [SerializeField] private float max_distance = 1000f; //ゴールまでの距離
     [Header("Wave1で1回のスポーンで湧く敵の数")] [SerializeField] private int baseEnemiesNum = 8;
     [Header("スポーンの間隔")] [SerializeField] private float enemySpawnInterval = 0.5f; // スポーン間隔
@@ -15,6 +14,7 @@ public class EnemySpawner : MonoBehaviour
     [Header("Waveの数")]　[SerializeField] private int maxWaves = 10;
 
     private SpawnCaluculateLib _spawnCaluculateLib;
+    private GameObject playerGameObj;
     public int currentWave = 1;
     private float timeSinceLastSpawn = 0f;
     private bool isSpawning = false;
@@ -27,6 +27,11 @@ public class EnemySpawner : MonoBehaviour
     private void Awake()
     {
         _spawnCaluculateLib = new SpawnCaluculateLib();
+    }
+
+    private void Start()
+    {
+        playerGameObj = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void Update()

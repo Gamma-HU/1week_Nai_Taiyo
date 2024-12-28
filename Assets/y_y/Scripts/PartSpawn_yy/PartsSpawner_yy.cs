@@ -5,7 +5,6 @@ using UnityEngine.Serialization;
 
 public class PartsSpawner_yy : MonoBehaviour
 {
-    [SerializeField] private GameObject playerGameObj;
     [Header("ゴールまでの距離")] [SerializeField] private float max_distance = 1000f; //ゴールまでの距離
     [Header("Wave1で1回のスポーンで湧くパーツの数")] [SerializeField] private int basePartsNum = 8;
     [Header("スポーンの間隔")] [SerializeField] private float partsSpawnInterval = 0.5f; // スポーン間隔
@@ -13,6 +12,7 @@ public class PartsSpawner_yy : MonoBehaviour
     [Header("Waveの数")]　[SerializeField] private int maxWaves = 10;
 
     private SpawnCaluculateLib _spawnCaluculateLib;
+    private GameObject playerGameObj;
     public int currentWave = 1;
     private float timeSinceLastSpawn = 0f;
     private bool isSpawning = false;
@@ -25,6 +25,11 @@ public class PartsSpawner_yy : MonoBehaviour
     private void Awake()
     {
         _spawnCaluculateLib = new SpawnCaluculateLib();
+    }
+
+    private void Start()
+    {
+        playerGameObj = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void Update()
@@ -74,7 +79,7 @@ public class PartsSpawner_yy : MonoBehaviour
         for (int i = 0; i < numberToSpawn; i++)
         {
             int partIndex_to_spawn = _spawnCaluculateLib.Choose(current_weights);
-            //Debug.Log(enemyIndex_to_spawn);
+            Debug.Log(partIndex_to_spawn);
             var partData_to_spawn = PartDataScritableObject.Entity.partDatas[partIndex_to_spawn];
             Vector2 current_playerPos = playerGameObj.GetComponent<RectTransform>().anchoredPosition;
         
@@ -82,8 +87,8 @@ public class PartsSpawner_yy : MonoBehaviour
             
             Vector2 spawnPos = _spawnCaluculateLib.SpawnRandomPos(current_playerPos, radius_min, radius_max);
             PartObj.GetComponent<RectTransform>().anchoredPosition = spawnPos - this.gameObject.GetComponent<RectTransform>().anchoredPosition;
-            //PartObj.GetComponent<Enemy>().Initialize(partData_to_spawn);
-            //PartObj.GetComponent<Enemy>().parentObjPos = this.gameObject.GetComponent<RectTransform>().anchoredPosition;
+            PartObj.GetComponent<Part>().Initialize(partData_to_spawn);
+            PartObj.GetComponent<Part>().parentObjPos = this.gameObject.GetComponent<RectTransform>().anchoredPosition;
             
             //Debug.Log($"playerPos: {playerGameObj.GetComponent<RectTransform>().anchoredPosition}");
             //Debug.Log($"spawnPos: {spawnPos}");

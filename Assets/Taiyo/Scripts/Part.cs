@@ -7,7 +7,15 @@ using UnityEngine;
 
 public class Part : MonoBehaviour
 {
-    [SerializeField] public float HP = 100;
+    protected float hp;
+    
+    public Vector2 parentObjPos { get; set; } // 親オブジェクトの座標(弾を打つときの方向の計算に必要)
+    
+    public void Initialize(PartData partData)
+    {
+        hp = partData.hp;
+    }
+    
     public float mass;
     //public bool isFrame;
     public bool isCockpit;
@@ -69,9 +77,9 @@ public class Part : MonoBehaviour
         if (other.gameObject.tag == "DamageSource")
         {
             DamageParameter damageParameter = other.gameObject.GetComponent<DamageParameter>();
-            this.HP -= damageParameter.damage;
+            this.hp -= damageParameter.damage;
             damageParameter.collisionCount += 1;
-            if (this.HP <= 0)
+            if (this.hp <= 0)
             {
                 DeattachFromParent();
             }

@@ -12,32 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f326eafc7162f41c29ffda78447aed6f, type: 3}
   m_Name: PartData
   m_EditorClassIdentifier: 
-  enemyDatas:
+  partDatas:
   - partType: 0
     partPrefab: {fileID: 8148397871811538582, guid: 54ad4f04c40cf4fc3ae84a3ee2324703, type: 3}
-    name: Frame
+    name: 
     hp: 1
-    text_explaination: "\u30D5\u30EC\u30FC\u30E0\u306E\u8AAC\u660E"
+    text_explaination: 
   - partType: 0
     partPrefab: {fileID: 7201349564049832313, guid: cf7bf675486084d1b9e839c2753e7f8b, type: 3}
-    name: Frame_Shuttle
+    name: 
     hp: 1
-    text_explaination: "\u30D5\u30EC\u30FC\u30E0\u30B7\u30E3\u30C8\u30EB\u306E\u8AAC\u660E"
+    text_explaination: 
   - partType: 0
     partPrefab: {fileID: 6415676595938027715, guid: 86cae71d0c924450297775389065fdd9, type: 3}
-    name: Jet
+    name: 
     hp: 1
-    text_explaination: "\u30B8\u30A7\u30C3\u30C8\u306E\u8AAC\u660E"
+    text_explaination: 
   - partType: 0
     partPrefab: {fileID: 8315649744146472612, guid: cffa9720fc8ad4ed8a85223f2f132623, type: 3}
-    name: Shot
+    name: 
     hp: 1
-    text_explaination: "\u7832\u53F0\u306E\u8AAC\u660E"
+    text_explaination: 
   - partType: 0
-    partPrefab: {fileID: 4756564997612206508, guid: 14c505a8c25834c898c89cdbf7a8e1b2, type: 3}
-    name: Tank
-    hp: 1
-    text_explaination: "\u71C3\u6599\u30BF\u30F3\u30AF\u306E\u8AAC\u660E"
+    partPrefab: {fileID: 3486181594879666892, guid: 42580c9d825c141928d9ea042ba1ceef, type: 3}
+    name: 
+    hp: 0
+    text_explaination: 
   weightListPerWave:
   - weights:
     - 1
