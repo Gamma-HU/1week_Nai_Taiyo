@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 8417159834663449962}
   - component: {fileID: 6721238976227376827}
   - component: {fileID: 2618221430017713233}
-  - component: {fileID: 5941334686112731574}
+  - component: {fileID: 8207684864307624909}
   m_Layer: 7
   m_Name: Frame
   m_TagString: Untagged
@@ -158,7 +158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9a91a26a1a404988b16aa315cf746c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 100
   mass: 1
   isCockpit: 0
   isConstructMode: 0
@@ -244,8 +243,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &5941334686112731574
-BoxCollider2D:
+--- !u!70 &8207684864307624909
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -276,19 +275,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0855875, y: 0.04279399}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.12, y: 5.12}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.72650623, y: 3.836187}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0.083877206, y: 0.100652695}
+  m_Size: {x: 0.9261348, y: 3.7108612}
+  m_Direction: 0
 --- !u!1001 &382941211972515430
 PrefabInstance:
   m_ObjectHideFlags: 0
