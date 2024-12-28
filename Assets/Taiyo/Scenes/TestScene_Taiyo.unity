@@ -762,6 +762,7 @@ MonoBehaviour:
   virtualCamera: {fileID: 148520718}
   zoomDuration: 0.5
   maxCameraSize: 50
+  constructManager: {fileID: 1231727348}
 --- !u!1 &171295234
 GameObject:
   m_ObjectHideFlags: 0
@@ -3382,6 +3383,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   constructRange: 20
   connectPointDistance: 2
+  isConstructMode: 0
   panelConstructScreen: {fileID: 1595956825}
   massText: {fileID: 1760842532}
   massPosObj: {fileID: 1895960811}
@@ -4027,7 +4029,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -431.78006, y: 170.57}
+  m_AnchoredPosition: {x: -431.78003, y: 170.57}
   m_SizeDelta: {x: -1402.04, y: -441.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1728120881
