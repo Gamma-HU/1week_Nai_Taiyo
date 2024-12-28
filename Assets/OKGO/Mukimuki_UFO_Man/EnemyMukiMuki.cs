@@ -17,7 +17,12 @@ public class EnemyMukiMuki : Enemy
     void Start()
     {
         SetRandomTarget();
-        player = GameObject.Find("Nise_Player");
+        player = GameObject.FindWithTag("Player");
+
+        if (player == null)
+        {
+            Debug.LogError("プレイヤーオブジェクトにタグをつけてください");
+        }
     }
 
     void Update()
