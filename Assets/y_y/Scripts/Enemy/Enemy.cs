@@ -26,4 +26,16 @@ public class Enemy : MonoBehaviour
         fireCooldown = enemyData.fireCooldown;
         text_explaination = enemyData.text_explaination;
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "PlayerBullet")
+        {
+            this.hp--;
+            if (hp == 0)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+    }
 }
