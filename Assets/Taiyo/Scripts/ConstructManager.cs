@@ -151,6 +151,6 @@ public class ConstructManager : MonoBehaviour
 
     public void SetFuelConsumptionText(float fuelConsumption)
     {
-        fuelConsumptionText.text = "総燃料消費量： " + fuelConsumption.ToString("F2");
+        fuelConsumptionText.text = "総燃料消費： " + fuelConsumption.ToString("F2") + "/s";
     }
 }

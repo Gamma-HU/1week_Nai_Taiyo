@@ -32,6 +32,7 @@ public class Part_Shot : Part_Action
             float angle = transform.rotation.eulerAngles.z;
 
             GameObject bullet = Instantiate(bulletPfb_Hold, transform.position, transform.rotation);
+            bullet.GetComponent<Rigidbody2D>().velocity = GameManager.instance.player.GetComponent<Rigidbody2D>().velocity;
             bullet.GetComponent<Rigidbody2D>().AddForce(Quaternion.Euler(0, 0, angle) * shotVec.normalized * shotPower, ForceMode2D.Impulse);
 
             shotTimer = 0;
