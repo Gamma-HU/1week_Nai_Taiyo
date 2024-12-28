@@ -197,7 +197,7 @@ public class Part : MonoBehaviour
 
         isPick = true;
         isConnected = false;
-        GameManager.instance.player.RemovePart(this);
+        if (GameManager.instance.player.PartsList.Contains(this)) GameManager.instance.player.RemovePart(this);
         PartSpawner.instance.AddFloatingPart(this);
 
         foreach (ConnectPoint connectPoint in connectPoints)
