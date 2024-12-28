@@ -15,6 +15,7 @@ public class CameraController : MonoBehaviour
     private float minCameraSize; // 初期サイズを最小サイズとして使用
     private float targetCameraSize; // 目標のカメラサイズ
 
+    public ConstructManager constructManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -62,7 +63,14 @@ public class CameraController : MonoBehaviour
         // 目標カメラサイズを計算
         if (farthestPart != null)
         {
-            targetCameraSize = Mathf.Clamp(maxDistance * 1.2f, minCameraSize, maxCameraSize);
+            if(constructManager.isConstructMode)
+            {
+                targetCameraSize = Mathf.Clamp(maxDistance * 1.5f, minCameraSize, maxCameraSize);
+            }
+            else
+            {
+                targetCameraSize = Mathf.Clamp(maxDistance * 2.0f, minCameraSize, maxCameraSize);
+            }
         }
 
         // DOTweenで滑らかにカメラサイズをアニメーション

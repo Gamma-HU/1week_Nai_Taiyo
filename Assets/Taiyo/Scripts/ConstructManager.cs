@@ -17,7 +17,7 @@ public class ConstructManager : MonoBehaviour
     List<Part> partsConstructingList = new List<Part>();
     public List<Part> PartsConstructingList => partsConstructingList;
 
-    bool isConstructMode;
+    public bool isConstructMode;
     Part partPicking;
 
     [SerializeField] GameObject panelConstructScreen;
