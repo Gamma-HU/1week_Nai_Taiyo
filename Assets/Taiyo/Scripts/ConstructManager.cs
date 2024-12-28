@@ -19,6 +19,8 @@ public class ConstructManager : MonoBehaviour
     bool isConstructMode;
     Part partPicking;
 
+    [SerializeField] GameObject fuelVolumeText;
+
     void Awake()
     {
         if (instance == null)

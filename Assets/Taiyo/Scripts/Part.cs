@@ -63,14 +63,14 @@ public class Part : MonoBehaviour
 
     }
 
-     void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "DamageSource")
         {
             DamageParameter damageParameter = collision.gameObject.GetComponent<DamageParameter>();
             this.HP -= damageParameter.damage;
             damageParameter.collisionCount += 1;
-            if(this.HP <= 0)
+            if (this.HP <= 0)
             {
                 DeattachFromParent();
             }
@@ -155,6 +155,8 @@ public class Part : MonoBehaviour
 
     public void Connect()
     {
+        PartSpawner.instance.RemoveFloatingPart(this);
+
         tag = "Part";
         transform.rotation *= Quaternion.Euler(0, 0, _angle);
         float z = transform.position.z;
@@ -246,20 +248,7 @@ public class Part : MonoBehaviour
 
     public void QuitPick()
     {
-
-        PartSpawner.instance.AddFloatingPart(this);
         tag = "Untagged";
-
-        /*
-                if (!GetComponent<Rigidbody2D>()) gameObject.AddComponent<Rigidbody2D>(); //Rigidbody2Dを追加
-                Rigidbody2D rb = GetComponent<Rigidbody2D>();
-                rb.mass = mass;
-                rb.drag = 0.2f;
-                rb.angularDrag = 0.1f;
-                rb.gravityScale = 0;
-                */
-
-
         rb.isKinematic = false;
         isPick = false;
         canConnect = false;
