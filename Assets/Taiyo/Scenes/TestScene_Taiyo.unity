@@ -885,7 +885,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 10298792519284}
+    m_TransformParent: {fileID: 385827516}
     m_Modifications:
     - target: {fileID: 3486181594879666892, guid: 42580c9d825c141928d9ea042ba1ceef, type: 3}
       propertyPath: m_Name
@@ -945,15 +945,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8403919707527974859, guid: 42580c9d825c141928d9ea042ba1ceef, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8403919707527974859, guid: 42580c9d825c141928d9ea042ba1ceef, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8403919707527974859, guid: 42580c9d825c141928d9ea042ba1ceef, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8403919707527974859, guid: 42580c9d825c141928d9ea042ba1ceef, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -961,7 +961,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8403919707527974859, guid: 42580c9d825c141928d9ea042ba1ceef, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -3.99
+      value: -7.59
       objectReference: {fileID: 0}
     - target: {fileID: 8403919707527974859, guid: 42580c9d825c141928d9ea042ba1ceef, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1394,6 +1394,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 203855774}
   - {fileID: 10298792519284}
   - {fileID: 1789167234}
   m_Father: {fileID: 1379795788}
@@ -3802,6 +3803,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floatingPartFolder: {fileID: 385827516}
   floatingPartList: []
+  max_distance: 1000
+  basePartsNum: 8
+  partsSpawnInterval: 0.5
+  difficultyScalingFactor: 0.75
+  maxWaves: 10
+  currentWave: 1
 --- !u!1 &1481272368
 GameObject:
   m_ObjectHideFlags: 0
@@ -5632,10 +5639,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 1070304858734996790, guid: 54ad4f04c40cf4fc3ae84a3ee2324703, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 203855774}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 54ad4f04c40cf4fc3ae84a3ee2324703, type: 3}
 --- !u!224 &10298792519284 stripped
