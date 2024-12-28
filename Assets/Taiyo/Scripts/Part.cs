@@ -53,7 +53,7 @@ public class Part : MonoBehaviour
 
     }
 
-    void Update()
+    protected virtual void Update()
     {
 
         if (isPick)
@@ -63,7 +63,7 @@ public class Part : MonoBehaviour
 
 
     }
-    
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "DamageSource")
@@ -114,7 +114,7 @@ public class Part : MonoBehaviour
 
 
 
-    public void StartConstructMode() //rigidbodyを持つ、Kinematic、isTriggerオンの状態にする
+    public virtual void StartConstructMode() //rigidbodyを持つ、Kinematic、isTriggerオンの状態にする
     {
         isConstructMode = true;
 
@@ -154,7 +154,7 @@ public class Part : MonoBehaviour
         }
     }
 
-    public void Connect()
+    public virtual void Connect()
     {
         PartSpawner.instance.RemoveFloatingPart(this);
 
@@ -189,7 +189,7 @@ public class Part : MonoBehaviour
         rb.isKinematic = true;
     }
 
-    public void Pick()
+    public virtual void Pick()
     {
 
         GetComponent<Collider2D>().isTrigger = false;
@@ -247,7 +247,7 @@ public class Part : MonoBehaviour
         }
     }
 
-    public void QuitPick()
+    public virtual void QuitPick()
     {
         tag = "Untagged";
         rb.isKinematic = false;
