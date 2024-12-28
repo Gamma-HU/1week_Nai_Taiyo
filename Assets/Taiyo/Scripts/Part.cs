@@ -104,7 +104,8 @@ public class Part : MonoBehaviour
         ghost.GetComponent<CapsuleCollider2D>().offset = GetComponent<CapsuleCollider2D>().offset;
 
         ghost.GetComponent<Collider2D>().isTrigger = true;
-        ghost.SetActive(false);
+        // ghost.SetActive(false);
+        SetAllGhostActive(false);
 
 
     }
@@ -179,8 +180,8 @@ public class Part : MonoBehaviour
         isConnected = true;
         isPick = false;
         canConnect = false;
-        ghost.SetActive(false);
-
+        // ghost.SetActive(false);
+        SetAllGhostActive(false);
 
         GetComponent<Collider2D>().isTrigger = true;
         rb.isKinematic = true;
@@ -231,7 +232,8 @@ public class Part : MonoBehaviour
         }
         else
         {
-            ghost.SetActive(false);
+            // ghost.SetActive(false);
+            SetAllGhostActive(false);
         }
 
         if (point1 && point2 && !ghost.GetComponent<Ghost>().IsCollide)
@@ -250,7 +252,8 @@ public class Part : MonoBehaviour
         rb.isKinematic = false;
         isPick = false;
         canConnect = false;
-        ghost.SetActive(false);
+        // ghost.SetActive(false);
+        SetAllGhostActive(false);
     }
 
     public void DeattachFromParent()
@@ -355,18 +358,50 @@ public class Part : MonoBehaviour
         }
 
         _angle = minAngle;
+        List<(GameObject, Vector3)> list = GetChildGhosts(this, transform.position);
+        foreach((GameObject g, Vector3 pos) in list)
+        {
+            // g.SetActive(true);
+            SetAllGhostActive(true);
+            g.transform.position = transform.position;
 
-        ghost.SetActive(true);
-        ghost.transform.position = transform.position;
+            //connectPointを中心に回転
+            Vector3 direction = g.transform.position - myPoint.transform.position;
+            direction = Quaternion.Euler(0, 0, minAngle) * direction;
+            g.transform.position = myPoint.transform.position + direction;
+            g.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, minAngle);
 
-        //connectPointを中心に回転
-        Vector3 direction = ghost.transform.position - myPoint.transform.position;
-        direction = Quaternion.Euler(0, 0, minAngle) * direction;
-        ghost.transform.position = myPoint.transform.position + direction;
-        ghost.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, minAngle);
+            //targetPointに移動
+            g.transform.position += targetPoint.transform.position - myPoint.transform.position + pos;
+        }
 
-        //targetPointに移動
-        ghost.transform.position += targetPoint.transform.position - myPoint.transform.position;
     }
 
+    List<(GameObject, Vector3)> GetChildGhosts(Part part, Vector3 parentPos) //子供のゴーストを全部持ってきて相対座標とともに返す
+    {
+        List<(GameObject, Vector3)> list = new List<(GameObject, Vector3)>();
+        list.Add((part.ghost, part.transform.position - parentPos));
+        foreach (ConnectPoint connectPoint in part.connectPoints)
+        {
+            if (connectPoint.isConected && connectPoint.isParent) 
+            {
+                Part childPart = connectPoint.targetConnectPoint.transform.parent.GetComponent<Part>();
+
+                if (childPart != null)
+                {
+                    list.AddRange(GetChildGhosts(childPart, parentPos));
+                }
+            }
+        }
+        return list;
+    }
+
+    void SetAllGhostActive(bool active)
+    {
+        List<(GameObject, Vector3)> list = GetChildGhosts(this, Vector3.zero);
+        foreach((GameObject g, Vector3 pos) in list)
+        {
+            g.SetActive(active);
+        }
+    }
 }
