@@ -18,8 +18,25 @@ MonoBehaviour:
     name: NormalEnemy
     hp: 1
     attack: 1
-    bulletPrefab: {fileID: 1825426770083038263, guid: 2c61aa934acd34cd6b1d575194270e81, type: 3}
+    bulletPrefab: {fileID: 2025172839387061428, guid: edfbcafd6d86f4fafa7d14d6b4a0cc7d, type: 3}
     bulletSpeed: 5
     fireRate: 5
     fireCooldown: 1
     text_explaination: 
+  - enemyType: 0
+    enemyPrefab: {fileID: 7848512915951603455, guid: 9c11360c1ba6348c6bcacc9fd3155437, type: 3}
+    name: mukimuki
+    hp: 1
+    attack: 1
+    bulletPrefab: {fileID: 2025172839387061428, guid: edfbcafd6d86f4fafa7d14d6b4a0cc7d, type: 3}
+    bulletSpeed: 5
+    fireRate: 5
+    fireCooldown: 1
+    text_explaination: 
+  weightListPerWave:
+  - weights:
+    - 0
+    - 1
+  - weights:
+    - 1
+    - 0

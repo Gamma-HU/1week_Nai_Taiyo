@@ -8,7 +8,6 @@ public class Bullet : MonoBehaviour
 
     float timer = 0;
 
-
     // Update is called once per frame
     void Update()
     {

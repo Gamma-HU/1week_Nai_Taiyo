@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
-{  
-    private string name;
-    private int hp;
-    private int attack;
-    private GameObject bulletPrefab; // 弾のPrefab
-    private float bulletSpeed; // 弾の速度
-    private float fireRate;     // 発射間隔（秒）
-    private float fireCooldown; // 発射タイマー
-    private string text_explaination;
+{
+    protected string enemy_name;
+    protected int hp;
+    protected int attack;
+    protected GameObject bulletPrefab; // 弾のPrefab
+    protected float bulletSpeed; // 弾の速度
+    protected float fireRate;     // 発射間隔（秒）
+    protected float fireCooldown; // 発射タイマー
+    protected string text_explaination;
+    
+    public Vector2 parentObjPos { get; set; } // 親オブジェクトの座標(弾を打つときの方向の計算に必要)
     
     public void Initialize(EnemyData enemyData)
     {
-        name = enemyData.name;
+        enemy_name = enemyData.name;
         hp = enemyData.hp;
         attack = enemyData.attack;
         bulletPrefab = enemyData.bulletPrefab;
@@ -23,48 +25,5 @@ public class Enemy : MonoBehaviour
         fireRate = enemyData.fireRate;
         fireCooldown = enemyData.fireCooldown;
         text_explaination = enemyData.text_explaination;
-    }
-
-    private Transform player;
-
-    void Start()
-    {
-        // プレイヤーを検索してTransformを取得
-        GameObject playerObj = GameObject.FindWithTag("Player");
-        if (playerObj != null)
-        {
-            player = playerObj.transform;
-        }
-    }
-
-    void Update()
-    {
-        // プレイヤーが存在する場合のみ動作
-        if (player != null)
-        {
-            // 発射タイマーを更新
-            fireCooldown -= Time.deltaTime;
-            if (fireCooldown <= 0f)
-            {
-                ShootAtPlayer();
-                fireCooldown = fireRate; // タイマーをリセット
-            }
-        }
-    }
-
-    void ShootAtPlayer()
-    {
-        // プレイヤーの方向を計算
-        Vector3 direction = (player.localPosition - this.gameObject.transform.localPosition).normalized;
-
-        // 弾を生成
-        GameObject bullet = Instantiate(bulletPrefab, this.gameObject.transform.localPosition, Quaternion.identity);
-
-        // 弾に速度を与える
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.velocity = direction * bulletSpeed;
-        }
     }
 }

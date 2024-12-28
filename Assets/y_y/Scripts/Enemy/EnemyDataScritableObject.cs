@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyDataScritableObject : ScriptableObject
 {
     public List<EnemyData> enemyDatas = new List<EnemyData>();
+    public WeightListPerWave[] weightListPerWave;
 
     public EnemyData GetEnemyData(EnemyData.EnemyType type)
     {
@@ -59,4 +60,10 @@ public class EnemyData
     public float fireCooldown; // 発射タイマー
     [TextArea]
     public string text_explaination;
+}
+
+[System.Serializable]
+public class WeightListPerWave
+{
+    public float[] weights;
 }

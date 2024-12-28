@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -6,6 +7,7 @@ using UnityEngine;
 
 public class Part : MonoBehaviour
 {
+    [SerializeField] public float HP = 100;
     public float mass;
     //public bool isFrame;
     public bool isCockpit;
@@ -51,7 +53,7 @@ public class Part : MonoBehaviour
 
     }
 
-    void Update()
+    protected virtual void Update()
     {
 
         if (isPick)
@@ -60,6 +62,20 @@ public class Part : MonoBehaviour
         }
 
 
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "DamageSource")
+        {
+            DamageParameter damageParameter = other.gameObject.GetComponent<DamageParameter>();
+            this.HP -= damageParameter.damage;
+            damageParameter.collisionCount += 1;
+            if (this.HP <= 0)
+            {
+                DeattachFromParent();
+            }
+        }
     }
 
     void InitializeGhost()
@@ -98,7 +114,7 @@ public class Part : MonoBehaviour
 
 
 
-    public void StartConstructMode() //rigidbodyを持つ、Kinematic、isTriggerオンの状態にする
+    public virtual void StartConstructMode() //rigidbodyを持つ、Kinematic、isTriggerオンの状態にする
     {
         isConstructMode = true;
 
@@ -138,8 +154,10 @@ public class Part : MonoBehaviour
         }
     }
 
-    public void Connect()
+    public virtual void Connect()
     {
+        PartSpawner.instance.RemoveFloatingPart(this);
+
         tag = "Part";
         transform.rotation *= Quaternion.Euler(0, 0, _angle);
         float z = transform.position.z;
@@ -171,7 +189,7 @@ public class Part : MonoBehaviour
         rb.isKinematic = true;
     }
 
-    public void Pick()
+    public virtual void Pick()
     {
 
         GetComponent<Collider2D>().isTrigger = false;
@@ -229,28 +247,35 @@ public class Part : MonoBehaviour
         }
     }
 
-    public void QuitPick()
+    public virtual void QuitPick()
     {
-
-        PartSpawner.instance.AddFloatingPart(this);
         tag = "Untagged";
-
-        /*
-                if (!GetComponent<Rigidbody2D>()) gameObject.AddComponent<Rigidbody2D>(); //Rigidbody2Dを追加
-                Rigidbody2D rb = GetComponent<Rigidbody2D>();
-                rb.mass = mass;
-                rb.drag = 0.2f;
-                rb.angularDrag = 0.1f;
-                rb.gravityScale = 0;
-                */
-
-
         rb.isKinematic = false;
         isPick = false;
         canConnect = false;
         ghost.SetActive(false);
     }
 
+    public void DeattachFromParent()
+    {
+        isConnected = false;
+        GameManager.instance.player.RemovePart(this);
+        PartSpawner.instance.AddFloatingPart(this);
+
+        foreach (ConnectPoint connectPoint in connectPoints)
+        {
+            if (connectPoint.isConected && !connectPoint.isParent) //子としてくっついていた場合
+            {
+                Part parentPart = connectPoint.targetConnectPoint.transform.parent.GetComponent<Part>();
+                if (!parentPart.isCockpit)
+                {
+                    parentPart.GetComponent<Part_Frame>().RemoveConnectedPart(this);
+                }
+                connectPoint.QuitConnect();
+            }
+        }
+
+    }
     (ConnectPoint, ConnectPoint) CheckConnectable()
     {
         ConnectPoint point1 = null;
