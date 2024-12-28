@@ -2,31 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NormalEnemy : MonoBehaviour
-{  
-    private string enemy_name;
-    private int hp;
-    private int attack;
-    private GameObject bulletPrefab; // 弾のPrefab
-    private float bulletSpeed; // 弾の速度
-    private float fireRate;     // 発射間隔（秒）
-    private float fireCooldown; // 発射タイマー
-    private string text_explaination;
-    
-    public Vector2 parentObjPos { get; set; } // 親オブジェクトの座標(弾を打つときの方向の計算に必要)
-    
-    public void Initialize(EnemyData enemyData)
-    {
-        enemy_name = enemyData.name;
-        hp = enemyData.hp;
-        attack = enemyData.attack;
-        bulletPrefab = enemyData.bulletPrefab;
-        bulletSpeed = enemyData.bulletSpeed;
-        fireRate = enemyData.fireRate;
-        fireCooldown = enemyData.fireCooldown;
-        text_explaination = enemyData.text_explaination;
-    }
-
+public class NormalEnemy : Enemy
+{
     private Transform player;
 
     void Start()
