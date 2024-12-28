@@ -51,8 +51,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerGameObj: {fileID: 0}
   max_distance: 1000
-  baseEnemiesNum: 2
-  enemySpawnInterval: 10
+  baseEnemiesNum: 1
+  enemySpawnInterval: 2
   difficultyScalingFactor: 0.75
   maxWaves: 10
   currentWave: 1

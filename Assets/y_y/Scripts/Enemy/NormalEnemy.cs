@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class NormalEnemy : MonoBehaviour
 {  
     private string enemy_name;
     private int hp;
@@ -12,6 +12,8 @@ public class Enemy : MonoBehaviour
     private float fireRate;     // 発射間隔（秒）
     private float fireCooldown; // 発射タイマー
     private string text_explaination;
+    
+    public Vector2 parentObjPos { get; set; } // 親オブジェクトの座標(弾を打つときの方向の計算に必要)
     
     public void Initialize(EnemyData enemyData)
     {
@@ -55,10 +57,10 @@ public class Enemy : MonoBehaviour
     void ShootAtPlayer()
     {
         // プレイヤーの方向を計算
-        Vector3 direction = (player.localPosition - this.gameObject.transform.localPosition).normalized;
-
+        // 親オブジェクトの座標は引いておく
+        Vector2 direction = (player.GetComponent<RectTransform>().anchoredPosition - (this.gameObject.GetComponent<RectTransform>().anchoredPosition + parentObjPos)).normalized;
         // 弾を生成
-        GameObject bullet = Instantiate(bulletPrefab, this.gameObject.transform.localPosition, Quaternion.identity);
+        GameObject bullet = Instantiate(bulletPrefab, this.gameObject.GetComponent<RectTransform>().anchoredPosition + parentObjPos, Quaternion.identity);
 
         // 弾に速度を与える
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();

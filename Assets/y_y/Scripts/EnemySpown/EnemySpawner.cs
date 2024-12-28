@@ -68,8 +68,8 @@ public class EnemySpawner : MonoBehaviour
         // カメラの範囲外に敵をスポーンする
         Vector3 camera_bottomLeft = Camera.main.ViewportToWorldPoint(Vector2.zero);
         Vector3 camera_topRight = Camera.main.ViewportToWorldPoint(Vector2.one);
-        radius_min = Vector3.Distance(camera_bottomLeft, camera_topRight);
-        radius_max = radius_min * 1.5f;
+        radius_min = Vector3.Distance(camera_bottomLeft, camera_topRight) / 2f;
+        radius_max = radius_min * 1.2f;
 
         current_weights = EnemyDataScritableObject.Entity.weightListPerWave[currentWave - 1].weights;
         
@@ -81,9 +81,11 @@ public class EnemySpawner : MonoBehaviour
             Vector2 current_playerPos = playerGameObj.GetComponent<RectTransform>().anchoredPosition;
         
             GameObject EnemyObj = Instantiate(enemyData_to_spawn.enemyPrefab, this.gameObject.transform);
+            
             Vector2 spawnPos = _enemySpawnCaluculateLib.SpawnRandomPos(current_playerPos, radius_min, radius_max);
             EnemyObj.GetComponent<RectTransform>().anchoredPosition = spawnPos - this.gameObject.GetComponent<RectTransform>().anchoredPosition;
-            EnemyObj.GetComponent<Enemy>().Initialize(enemyData_to_spawn);
+            EnemyObj.GetComponent<NormalEnemy>().Initialize(enemyData_to_spawn);
+            EnemyObj.GetComponent<NormalEnemy>().parentObjPos = this.gameObject.GetComponent<RectTransform>().anchoredPosition;
             
             //Debug.Log($"playerPos: {playerGameObj.GetComponent<RectTransform>().anchoredPosition}");
             //Debug.Log($"spawnPos: {spawnPos}");
