@@ -13,9 +13,12 @@ public class Player : MonoBehaviour
     float angleCorrectionForceRight;
     float angleCorrectionForceLeft;
 
+    [SerializeField] float fuelRecoverySpeed; //燃料回復速度
+
     [SerializeField] Transform partFolder;
 
     [SerializeField] Slider fuelSlider;
+
 
 
     Rigidbody2D rb;
@@ -37,7 +40,6 @@ public class Player : MonoBehaviour
 
     float fuelMax;
     float fuel;
-    [SerializeField] float fuelRecoverySpeed; //燃料回復速度
     float fuelUsableMin = 1f; //燃料がこれ以下になると動力パーツが動かなくなる
     bool isFuelEmpty;
     Color fuelColorNormal;
@@ -81,23 +83,28 @@ public class Player : MonoBehaviour
     {
         SetInput();
 
-        if (!isConstructMode && (inputVec.magnitude < deadZone || isFuelEmpty)) //入力がないとき or 燃料が空のときは回復
-        {
-            RecoveryFuel();
-        }
+
     }
 
     void FixedUpdate()
     {
-        if (!isFuelEmpty)
+        if (!isConstructMode)
         {
-            DoPower();
-            CorrectDirection();
-        }
-        DoHoldAction();
-        DoPushAction();
+            if (!isFuelEmpty)
+            {
+                DoPower();
+                CorrectDirection();
+            }
+            DoHoldAction();
+            DoPushAction();
 
-        Friction();
+            Friction();
+
+            if (inputVec.magnitude < deadZone || isFuelEmpty) //入力がないとき or 燃料が空のときは回復
+            {
+                RecoveryFuel();
+            }
+        }
 
         ResetInput();
     }
@@ -158,6 +165,11 @@ public class Player : MonoBehaviour
         SetMass();
         SetPartPowerParameters();
         SetFuelMax();
+
+        if (partsList.Count == 0)
+        {
+            GameManager.instance.GameOver();
+        }
     }
 
 
@@ -186,14 +198,18 @@ public class Player : MonoBehaviour
 
         foreach (Part part in partsList)
         {
-            if (part is Part_Frame)
+            if (part is Part_Power)
             {
                 hasPower = true;
-                break;
             }
             else if (part is Part_Tank)
             {
                 hasTank = true;
+            }
+
+            if (hasPower && hasTank)
+            {
+                break;
             }
         }
 
@@ -280,16 +296,16 @@ public class Player : MonoBehaviour
 
     public void SetFuelMax()
     {
-        fuelMax = 0;
+        float newFuelMax = 0;
         foreach (Part part in partsList)
         {
             if (part is Part_Tank)
             {
                 Part_Tank part_Tank = (Part_Tank)part;
-                fuelMax += part_Tank.volume;
+                newFuelMax += part_Tank.volume;
             }
         }
-        fuel = fuelMax;
+        fuelMax = newFuelMax;
     }
 
 
@@ -396,7 +412,7 @@ public class Player : MonoBehaviour
 
     public void RecoveryFuel()
     {
-        if (fuel < fuelMax) fuel += fuelRecoverySpeed * Time.deltaTime;
+        if (fuel < fuelMax) fuel += fuelRecoverySpeed * fuelMax * Time.deltaTime;
 
         //燃料が空の状態から燃料が回復した場合（消費燃料が多いほど復帰は遅い）
         if (isFuelEmpty && (fuel > fuelUsableMin * fuelConsumptionSum || fuel == fuelMax))

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -15,7 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject panelMessage;
     [SerializeField] GameObject textMessagePfb;
 
-    GameObject textMessagePrev;
+    GameObject textMessageOnThisFrame;
 
 
     void Awake()
@@ -23,6 +25,7 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -30,6 +33,11 @@ public class GameManager : MonoBehaviour
         }
 
         player = GameObject.Find("Player").GetComponent<Player>();
+    }
+
+    void LateUpdate()
+    {
+        if (textMessageOnThisFrame) textMessageOnThisFrame = null;
     }
 
     public void StartConstructMode()
@@ -57,11 +65,17 @@ public class GameManager : MonoBehaviour
         GameObject textMessage = Instantiate(textMessagePfb, panelMessage.transform);
         textMessage.GetComponent<TMPro.TextMeshProUGUI>().text = message;
 
-        if (textMessagePrev != null)
+        //同じフレームで複数のメッセージが表示される場合、重ならないようにする
+        if (textMessageOnThisFrame != null)
         {
-            textMessage.transform.position = textMessagePrev.transform.position + new Vector3(0, textMessagePrev.GetComponent<RectTransform>().rect.height, 0);
+            textMessage.transform.localPosition = textMessageOnThisFrame.transform.localPosition + new Vector3(0, 100, 0);
         }
-        textMessagePrev = textMessage;
+        textMessageOnThisFrame = textMessage;
+    }
+
+    public void GameOver()
+    {
+        DisplayMessage("Game Over");
     }
 
 }
