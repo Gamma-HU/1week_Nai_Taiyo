@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -63,11 +64,11 @@ public class Part : MonoBehaviour
 
     }
 
-     void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.gameObject.tag == "DamageSource")
+        if (other.gameObject.tag == "DamageSource")
         {
-            DamageParameter damageParameter = collision.gameObject.GetComponent<DamageParameter>();
+            DamageParameter damageParameter = other.gameObject.GetComponent<DamageParameter>();
             this.HP -= damageParameter.damage;
             damageParameter.collisionCount += 1;
             if(this.HP <= 0)

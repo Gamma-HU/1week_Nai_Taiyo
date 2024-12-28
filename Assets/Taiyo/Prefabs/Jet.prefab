@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 209c0ed80b3dc4dc19559abcb41cb9f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HP: 1
   mass: 1
   isCockpit: 0
   isConstructMode: 0
