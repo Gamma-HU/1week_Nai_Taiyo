@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class ConnectPoint : MonoBehaviour
 {
     [SerializeField] public bool isFrameMode;
-    [SerializeField] public List<float> angleList = new List<float>();
 
     public bool isConected;
     public ConnectPoint targetConnectPoint;
@@ -14,6 +13,9 @@ public class ConnectPoint : MonoBehaviour
 
     Color colorNormal = new Color(1, 1, 1, 1);
     Color colorConnected = new Color(0, 1, 0, 1);
+
+
+    public List<float> angleList = new List<float>();
 
     void Awake()
     {

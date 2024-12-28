@@ -12,6 +12,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera vCamera;
     [SerializeField] float orthoSizeConstruct;
     [SerializeField] float orthoSizeNormal;
+    [SerializeField] GameObject panelMessage;
+    [SerializeField] GameObject textMessagePfb;
+
+    GameObject textMessagePrev;
 
 
     void Awake()
@@ -37,10 +41,27 @@ public class GameManager : MonoBehaviour
 
     public void EndConstructMode()
     {
+        if (!player.CanEndConstructMode())
+        {
+            return;
+        }
+
 
         vCamera.m_Lens.OrthographicSize = orthoSizeNormal;
         ConstructManager.instance.EndConstructMode();
         player.EndConstructMode();
+    }
+
+    public void DisplayMessage(string message)
+    {
+        GameObject textMessage = Instantiate(textMessagePfb, panelMessage.transform);
+        textMessage.GetComponent<TMPro.TextMeshProUGUI>().text = message;
+
+        if (textMessagePrev != null)
+        {
+            textMessage.transform.position = textMessagePrev.transform.position + new Vector3(0, textMessagePrev.GetComponent<RectTransform>().rect.height, 0);
+        }
+        textMessagePrev = textMessage;
     }
 
 }
