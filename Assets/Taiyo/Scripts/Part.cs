@@ -8,14 +8,14 @@ using UnityEngine;
 public class Part : MonoBehaviour
 {
     protected float hp;
-    
+
     public Vector2 parentObjPos { get; set; } // 親オブジェクトの座標(弾を打つときの方向の計算に必要)
-    
+
     public void Initialize(PartData partData)
     {
         hp = partData.hp;
     }
-    
+
     public float mass;
     //public bool isFrame;
     public bool isCockpit;
@@ -83,6 +83,7 @@ public class Part : MonoBehaviour
             {
                 DeattachFromParent();
             }
+            Destroy(other.gameObject);
         }
     }
 
@@ -92,28 +93,16 @@ public class Part : MonoBehaviour
         ghost.GetComponent<SpriteRenderer>().sprite = GetComponent<SpriteRenderer>().sprite;
         ghost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.3f);  //透明度30%
 
-        if (GetComponent<BoxCollider2D>())
-        {
-            ghost.AddComponent<BoxCollider2D>();
-        }
-        else if (GetComponent<CircleCollider2D>())
-        {
-            ghost.AddComponent<CircleCollider2D>();
-        }
-        else if (GetComponent<PolygonCollider2D>())
-        {
-            ghost.AddComponent<PolygonCollider2D>();
-        }
-        else if (GetComponent<CapsuleCollider2D>())
+
+        if (GetComponent<CapsuleCollider2D>())
         {
             ghost.AddComponent<CapsuleCollider2D>();
         }
-        else if (GetComponent<EdgeCollider2D>())
-        {
-            ghost.AddComponent<EdgeCollider2D>();
-        }
 
-        ghost.GetComponent<Collider2D>().CopyCollider2D(GetComponent<Collider2D>()); //コライダーをコピー
+        ghost.GetComponent<CapsuleCollider2D>().direction = GetComponent<CapsuleCollider2D>().direction;
+        ghost.GetComponent<CapsuleCollider2D>().size = GetComponent<CapsuleCollider2D>().size;
+        ghost.GetComponent<CapsuleCollider2D>().offset = GetComponent<CapsuleCollider2D>().offset;
+
         ghost.GetComponent<Collider2D>().isTrigger = true;
         ghost.SetActive(false);
 
