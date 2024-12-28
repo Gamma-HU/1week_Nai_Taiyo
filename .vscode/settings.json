@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "1week_Nai.sln"
+    "dotnet.defaultSolution": "1weekgamejam.sln"
 }
