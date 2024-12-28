@@ -14,7 +14,7 @@ public class EnemySpawner : MonoBehaviour
     [Header("Wave進行による難易度上昇率")]　[SerializeField] private float difficultyScalingFactor = 0.75f;
     [Header("Waveの数")]　[SerializeField] private int maxWaves = 10;
 
-    private EnemySpawnCaluculateLib _enemySpawnCaluculateLib;
+    private SpawnCaluculateLib _spawnCaluculateLib;
     public int currentWave = 1;
     private float timeSinceLastSpawn = 0f;
     private bool isSpawning = false;
@@ -26,7 +26,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Awake()
     {
-        _enemySpawnCaluculateLib = new EnemySpawnCaluculateLib();
+        _spawnCaluculateLib = new SpawnCaluculateLib();
     }
 
     private void Update()
@@ -75,14 +75,14 @@ public class EnemySpawner : MonoBehaviour
         
         for (int i = 0; i < numberToSpawn; i++)
         {
-            int enemyIndex_to_spawn = _enemySpawnCaluculateLib.Choose(current_weights);
+            int enemyIndex_to_spawn = _spawnCaluculateLib.Choose(current_weights);
             //Debug.Log(enemyIndex_to_spawn);
             var enemyData_to_spawn = EnemyDataScritableObject.Entity.enemyDatas[enemyIndex_to_spawn];
             Vector2 current_playerPos = playerGameObj.GetComponent<RectTransform>().anchoredPosition;
         
             GameObject EnemyObj = Instantiate(enemyData_to_spawn.enemyPrefab, this.gameObject.transform);
             
-            Vector2 spawnPos = _enemySpawnCaluculateLib.SpawnRandomPos(current_playerPos, radius_min, radius_max);
+            Vector2 spawnPos = _spawnCaluculateLib.SpawnRandomPos(current_playerPos, radius_min, radius_max);
             EnemyObj.GetComponent<RectTransform>().anchoredPosition = spawnPos - this.gameObject.GetComponent<RectTransform>().anchoredPosition;
             EnemyObj.GetComponent<Enemy>().Initialize(enemyData_to_spawn);
             EnemyObj.GetComponent<Enemy>().parentObjPos = this.gameObject.GetComponent<RectTransform>().anchoredPosition;

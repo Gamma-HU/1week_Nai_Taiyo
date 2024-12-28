@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawnCaluculateLib
+public class SpawnCaluculateLib
 {
     public Vector2 SpawnRandomPos(Vector2 playerPos, float radius_min, float radius_max)
     {
