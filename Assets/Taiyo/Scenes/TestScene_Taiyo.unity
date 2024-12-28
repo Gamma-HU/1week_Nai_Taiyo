@@ -783,6 +783,7 @@ GameObject:
   m_Component:
   - component: {fileID: 148520719}
   - component: {fileID: 148520718}
+  - component: {fileID: 148520720}
   m_Layer: 0
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -845,6 +846,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &148520720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148520717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b2fd41a6162d4a6ab179b8744ca7b91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 710696269}
+  cockPit: {fileID: 1066595923}
+  virtualCamera: {fileID: 148520718}
+  zoomDuration: 0.5
+  maxCameraSize: 50
 --- !u!1 &171295234
 GameObject:
   m_ObjectHideFlags: 0
@@ -5505,7 +5523,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -431.78015, y: 170.57}
+  m_AnchoredPosition: {x: -431.780065, y: 170.57}
   m_SizeDelta: {x: -1402.04, y: -441.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1728120881

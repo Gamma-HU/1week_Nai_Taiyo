@@ -1,9 +1,5 @@
-using System;
-using TMPro;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
+using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -23,6 +19,7 @@ public class EnemySpawner : MonoBehaviour
     private float radius_max;
     
     private float[] current_weights;
+    public List<Enemy> spawnedEnemies = new List<Enemy>();
 
     private void Awake()
     {
@@ -91,10 +88,22 @@ public class EnemySpawner : MonoBehaviour
             EnemyObj.GetComponent<RectTransform>().anchoredPosition = spawnPos - this.gameObject.GetComponent<RectTransform>().anchoredPosition;
             EnemyObj.GetComponent<Enemy>().Initialize(enemyData_to_spawn);
             EnemyObj.GetComponent<Enemy>().parentObjPos = this.gameObject.GetComponent<RectTransform>().anchoredPosition;
-            
+
+
+            AddEnemiesList(EnemyObj.GetComponent<Enemy>());
             //Debug.Log($"playerPos: {playerGameObj.GetComponent<RectTransform>().anchoredPosition}");
             //Debug.Log($"spawnPos: {spawnPos}");
         }
     }
 
+
+    private void AddEnemiesList(Enemy enemy)
+    {
+        spawnedEnemies.Add(enemy);
+    }
+
+    private void RemoveEnemiesList(Enemy enemy)
+    {
+        spawnedEnemies.Remove(enemy);
+    }
 }
