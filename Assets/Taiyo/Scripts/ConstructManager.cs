@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -19,7 +20,13 @@ public class ConstructManager : MonoBehaviour
     bool isConstructMode;
     Part partPicking;
 
-    [SerializeField] GameObject fuelVolumeText;
+    [SerializeField] GameObject panelConstructScreen;
+    [SerializeField] TextMeshProUGUI massText;
+    [SerializeField] GameObject massPosObj;
+    [SerializeField] TextMeshProUGUI fuelVolumeText;
+    [SerializeField] TextMeshProUGUI rightForceText;
+    [SerializeField] TextMeshProUGUI leftForceText;
+    [SerializeField] TextMeshProUGUI fuelConsumptionText;
 
     void Awake()
     {
@@ -66,8 +73,6 @@ public class ConstructManager : MonoBehaviour
                 }
             }
         }
-
-
     }
 
     public void StartConstructMode()
@@ -81,6 +86,7 @@ public class ConstructManager : MonoBehaviour
         }
 
         isConstructMode = true;
+        panelConstructScreen.SetActive(true);
     }
 
     public void EndConstructMode()
@@ -92,6 +98,7 @@ public class ConstructManager : MonoBehaviour
         partsConstructingList.Clear();
 
         isConstructMode = false;
+        panelConstructScreen.SetActive(false);
     }
 
     public void SetConstructingParts(Part part)
@@ -122,5 +129,28 @@ public class ConstructManager : MonoBehaviour
                 partPicking = part;
             }
         }
+    }
+
+    public void SetMassTextAndPos(float mass, Vector2 pos)
+    {
+        massText.text = "総重量： " + mass.ToString("F2");
+        massPosObj.transform.position = pos;
+        Debug.Log(pos);
+    }
+
+    public void SetFuelVolumeText(float fuelVolume)
+    {
+        fuelVolumeText.text = "燃料容量： " + fuelVolume.ToString("F2");
+    }
+
+    public void SetRotationForceText(float rightForce, float leftForce)
+    {
+        rightForceText.text = "右回転力： " + rightForce.ToString("F2");
+        leftForceText.text = "左回転力： " + leftForce.ToString("F2");
+    }
+
+    public void SetFuelConsumptionText(float fuelConsumption)
+    {
+        fuelConsumptionText.text = "総燃料消費量： " + fuelConsumption.ToString("F2");
     }
 }

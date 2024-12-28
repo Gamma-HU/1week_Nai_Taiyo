@@ -15,8 +15,8 @@ public class MessageText : MonoBehaviour
         text = GetComponent<TextMeshProUGUI>();
 
         var sequence = DOTween.Sequence();
-        sequence.Append(transform.DOLocalMoveY(200, 1).SetRelative())
-                .Join(text.DOFade(0, 1))
+        sequence.Append(transform.DOLocalMoveY(200, 2).SetRelative())
+                .Join(text.DOFade(0, 2))
                 .OnComplete(() => Destroy(gameObject));
     }
 

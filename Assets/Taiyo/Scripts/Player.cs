@@ -45,6 +45,9 @@ public class Player : MonoBehaviour
     Color fuelColorNormal;
     Color fuelColorEmpty = new Color(1, 0, 0, 1);
 
+    Vector2 massCenterWorldPos;
+
+
     void OnDrawGizmos()
     {
         if (rb != null)
@@ -188,6 +191,11 @@ public class Player : MonoBehaviour
             ConstructManager.instance.SetConstructingParts(part);
         }
 
+        ConstructManager.instance.SetMassTextAndPos(rb.mass, massCenterWorldPos);
+        ConstructManager.instance.SetRotationForceText(angleCorrectionForceRight, angleCorrectionForceLeft);
+        ConstructManager.instance.SetFuelConsumptionText(fuelConsumptionSum);
+        ConstructManager.instance.SetFuelVolumeText(fuelMax);
+
         isConstructMode = true;
     }
 
@@ -254,7 +262,10 @@ public class Player : MonoBehaviour
         rb.mass = mass;
 
         //重心を設定
-        rb.centerOfMass = transform.InverseTransformPoint(massCenter / mass);
+        massCenterWorldPos = massCenter / mass;
+        rb.centerOfMass = transform.InverseTransformPoint(massCenterWorldPos);
+
+        ConstructManager.instance.SetMassTextAndPos(mass, massCenterWorldPos);
     }
 
     void SetPartPowerParameters()
@@ -292,6 +303,9 @@ public class Player : MonoBehaviour
         angleCorrectionForceRight = forceRight;
 
         fuelConsumptionSum = fuelSum;
+
+        ConstructManager.instance.SetRotationForceText(forceRight, forceLeft);
+        ConstructManager.instance.SetFuelConsumptionText(fuelSum);
     }
 
     public void SetFuelMax()
@@ -306,6 +320,7 @@ public class Player : MonoBehaviour
             }
         }
         fuelMax = newFuelMax;
+        ConstructManager.instance.SetFuelVolumeText(fuelMax);
     }
 
 
