@@ -86,6 +86,10 @@ public class ConstructManager : MonoBehaviour
             {
                 SetConstructingParts(part);
             }
+            else
+            {
+                part.GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
+            }
         }
 
         isConstructMode = true;
@@ -95,6 +99,11 @@ public class ConstructManager : MonoBehaviour
 
     public void EndConstructMode()
     {
+        foreach (Part part in PartSpawner.instance.floatingPartList)
+        {
+            part.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        }
+
         foreach (Part part in partsConstructingList)
         {
             part.EndConstructMode();
