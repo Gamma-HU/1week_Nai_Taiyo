@@ -28,6 +28,12 @@ public class ConstructManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI leftForceText;
     [SerializeField] TextMeshProUGUI fuelConsumptionText;
 
+    Part partSelected;
+    [SerializeField]
+    RectTransform partTextPanel;
+    [SerializeField]
+    TextMeshProUGUI partText;
+
     void Awake()
     {
         if (instance == null)
@@ -49,8 +55,16 @@ public class ConstructManager : MonoBehaviour
     {
         if (!isConstructMode)
         {
+            partTextPanel.gameObject.SetActive(false);
+            if (partSelected != null)
+            {
+                partSelected.SetOutline(false);
+                partSelected = null;
+            }
             return;
         }
+
+        SelectPart();
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -119,6 +133,36 @@ public class ConstructManager : MonoBehaviour
     {
         partsConstructingList.Add(part);
         part.StartConstructMode();
+    }
+
+    void SelectPart()
+    {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition.z = -10;
+
+        // レイを飛ばす
+        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+
+        // レイキャストがパーツに当たった場合
+        if (hit.collider != null && hit.collider.gameObject.GetComponent<Part>())
+        {
+            Part part = hit.collider.gameObject.GetComponent<Part>();
+            if (part != partSelected)
+            {
+                if (partSelected != null) partSelected.SetOutline(false);
+                partSelected = part;
+                partSelected.SetOutline(true);
+            }
+        }
+
+        // 説明を出す
+        if (partSelected != null)
+        {
+            partTextPanel.gameObject.SetActive(true);
+            partTextPanel.transform.position = partSelected.transform.position;
+            partTextPanel.transform.localPosition += new Vector3(330, 200);
+            partText.text = $"名前：{partSelected}\n";
+        }
     }
 
     void PickPart()
