@@ -170,4 +170,9 @@ public class PartSpawner : MonoBehaviour
         
         floatingPartList.Clear();
     }
+
+    public void StopSpawn()
+    {
+        isSpawning = false;
+    }
 }
