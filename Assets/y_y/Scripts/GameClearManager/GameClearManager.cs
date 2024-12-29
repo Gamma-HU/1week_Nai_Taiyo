@@ -7,15 +7,27 @@ using DG.Tweening; // DOTweenを使用
 
 public class GameClearManager : MonoBehaviour
 {
+    public float score = 4435;
+
     [SerializeField] private float goalDistance = 1000f;
     [SerializeField] private GameObject ClearUI;
     [SerializeField] private TextMeshProUGUI RemainDistanceText;
     private float current_distance = 0f;
     private GameObject playerGameObj;
-    
+
     [SerializeField] private float duration = 2.0f;
     private float forceMagnitude;
-    [Header("スタート地点の座標")]　[SerializeField] private Vector2 startPosition = new Vector2(0, 0);
+    [Header("スタート地点の座標")][SerializeField] private Vector2 startPosition = new Vector2(0, 0);
+
+    [SerializeField] private TextMeshProUGUI clearText;
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private float moveDistance = 50f;  // 下方向に動かす距離
+    [SerializeField] private float animationDuration = 1f; // アニメーションの長さ
+    private bool is_score_anim = false; // スコアのルーレットアニメーション
+
+    [SerializeField] private float Scoretext_animationDuration = 1.5f; // 文字アニメーションの長さ
+
+    [SerializeField] private GameObject buttons;
 
     private bool is_gameClear = false;
     private Vector2 forceDirection;
@@ -30,11 +42,16 @@ public class GameClearManager : MonoBehaviour
     {
         current_distance = Vector3.Distance(startPosition, playerGameObj.GetComponent<RectTransform>().anchoredPosition);
         float remainDistance = goalDistance - current_distance;
-        if(remainDistance <= 0f) remainDistance = 0f;
-        RemainDistanceText.text = $"残り" + remainDistance.ToString("F0") + "m";
+        if (remainDistance <= 0f) remainDistance = 0f;
+        RemainDistanceText.text = remainDistance.ToString("F0") + "m";
         if (current_distance > goalDistance)
         {
             GameClear();
+        }
+
+        if (is_score_anim)
+        {
+            scoreText.text = $"SCORE: {Random.Range(100, 1000)}";
         }
     }
 
@@ -51,12 +68,12 @@ public class GameClearManager : MonoBehaviour
     private void GameClear()
     {
         //Time.timeScale = 0f;
-        
+
         // プレイヤーの操作を受け付けないように
         playerGameObj.GetComponent<Player>().is_Gameclear = true;
-        
+
         is_gameClear = true;
-        
+
         forceDirection = playerGameObj.GetComponent<RectTransform>().anchoredPosition - startPosition;
         forceMagnitude = playerGameObj.GetComponent<Rigidbody2D>().mass;
         forceMagnitude *= 10f;
@@ -64,7 +81,7 @@ public class GameClearManager : MonoBehaviour
         float playerZRotation = playerGameObj.GetComponent<RectTransform>().localRotation.eulerAngles.z;
         Vector3 cameraRotation = Camera.main.transform.rotation.eulerAngles;
         cameraRotation.z = playerZRotation;
-        
+
         //Camera.main.transform.DORotate(cameraRotation, duration, RotateMode.FastBeyond360);  
         ClearUI.SetActive(true);
     }
@@ -73,5 +90,46 @@ public class GameClearManager : MonoBehaviour
     {
         //Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    [ContextMenu("AnimateClearText")]
+    public void AnimateClearText()
+    {
+        // 初期状態を設定
+        clearText.alpha = 0; // 透明にする
+        clearText.rectTransform.anchoredPosition += new Vector2(0, -moveDistance); // 初期位置を下にオフセット
+
+        // アニメーション
+        Sequence sequence = DOTween.Sequence();
+        sequence
+            .Append(clearText.DOFade(1f, animationDuration)) // フェードイン
+            .Join(clearText.rectTransform.DOAnchorPosY(clearText.rectTransform.anchoredPosition.y + moveDistance, animationDuration)) // 下から上へ移動
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() => ShowScoreText()); // 緩やかに再生
+
+
+    }
+
+
+    private void ShowScoreText()
+    {
+        scoreText.gameObject.SetActive(true);
+        StartCoroutine(StartScoreTextAnim());
+    }
+
+    IEnumerator StartScoreTextAnim()
+    {
+        is_score_anim = true;
+        yield return new WaitForSeconds(Scoretext_animationDuration);
+        is_score_anim = false;
+
+        scoreText.text = $"SCORE: {score}";
+
+        ShowButtons();
+    }
+
+    private void ShowButtons()
+    {
+        buttons.SetActive(true);
     }
 }
