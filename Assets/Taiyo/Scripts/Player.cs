@@ -164,6 +164,16 @@ public class Player : MonoBehaviour
         SetMass();
         SetPartPowerParameters();
         SetFuelMax();
+
+        if(part.gameObject.GetComponent<Part>().isHuman)
+        {
+            GameManager.instance.MultipleScore(); // スコア2倍
+        }
+        else if (part.gameObject.GetComponent<Part>().isRareHuman)
+        {
+            GameManager.instance.MultipleScore();
+            GameManager.instance.MultipleScore(); // スコア4倍
+        }
     }
 
     public void RemovePart(Part part)
@@ -183,6 +193,16 @@ public class Player : MonoBehaviour
         SetMass();
         SetPartPowerParameters();
         SetFuelMax();
+
+        if (part.gameObject.GetComponent<Part>().isHuman)
+        {
+            GameManager.instance.DeviseScore();
+        }
+        else if (part.gameObject.GetComponent<Part>().isRareHuman)
+        {
+            GameManager.instance.DeviseScore();
+            GameManager.instance.DeviseScore();
+        }
 
         //ゲームオーバー判定
         if (isConstructMode || GameManager.instance.isGameOver) return;

@@ -40,6 +40,9 @@ public class Part : MonoBehaviour
     HPbarPart hpbar;
     float damageTimer;
 
+    public bool isHuman;
+    public bool isRareHuman;
+
 
     protected virtual void Awake()
     {

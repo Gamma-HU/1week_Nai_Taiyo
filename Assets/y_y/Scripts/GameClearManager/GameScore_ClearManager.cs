@@ -5,10 +5,8 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening; // DOTweenを使用
 
-public class GameClearManager : MonoBehaviour
+public class GameScore_ClearManager : MonoBehaviour
 {
-    public float score = 4435;
-
     [SerializeField] private float goalDistance = 1000f;
     [SerializeField] private GameObject ClearUI;
     [SerializeField] private TextMeshProUGUI RemainDistanceText;
@@ -20,7 +18,8 @@ public class GameClearManager : MonoBehaviour
     [Header("スタート地点の座標")][SerializeField] private Vector2 startPosition = new Vector2(0, 0);
 
     [SerializeField] private TextMeshProUGUI clearText;
-    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI current_scoreText;
+    [SerializeField] private TextMeshProUGUI result_scoreText;
     [SerializeField] private float moveDistance = 50f;  // 下方向に動かす距離
     [SerializeField] private float animationDuration = 1f; // アニメーションの長さ
     private bool is_score_anim = false; // スコアのルーレットアニメーション
@@ -44,6 +43,7 @@ public class GameClearManager : MonoBehaviour
         float remainDistance = goalDistance - current_distance;
         if (remainDistance <= 0f) remainDistance = 0f;
         RemainDistanceText.text = remainDistance.ToString("F0") + "m";
+        current_scoreText.text = $"SCORE: {GameManager.instance.score}";
         if (current_distance > goalDistance)
         {
             GameClear();
@@ -51,7 +51,7 @@ public class GameClearManager : MonoBehaviour
 
         if (is_score_anim)
         {
-            scoreText.text = $"SCORE: {Random.Range(100, 1000)}";
+            result_scoreText.text = $"SCORE: {Random.Range(100, 1000)}";
         }
     }
 
@@ -67,7 +67,13 @@ public class GameClearManager : MonoBehaviour
 
     private void GameClear()
     {
+
         //Time.timeScale = 0f;
+        // 初期状態を設定
+        clearText.gameObject.SetActive(true);
+
+        RemainDistanceText.text = "GOAL!";
+        current_scoreText.text = $"GOAL!";
 
         // プレイヤーの操作を受け付けないように
         playerGameObj.GetComponent<Player>().is_Gameclear = true;
@@ -95,7 +101,6 @@ public class GameClearManager : MonoBehaviour
     [ContextMenu("AnimateClearText")]
     public void AnimateClearText()
     {
-        // 初期状態を設定
         clearText.alpha = 0; // 透明にする
         clearText.rectTransform.anchoredPosition += new Vector2(0, -moveDistance); // 初期位置を下にオフセット
 
@@ -113,7 +118,7 @@ public class GameClearManager : MonoBehaviour
 
     private void ShowScoreText()
     {
-        scoreText.gameObject.SetActive(true);
+        result_scoreText.gameObject.SetActive(true);
         StartCoroutine(StartScoreTextAnim());
     }
 
@@ -123,7 +128,7 @@ public class GameClearManager : MonoBehaviour
         yield return new WaitForSeconds(Scoretext_animationDuration);
         is_score_anim = false;
 
-        scoreText.text = $"SCORE: {score}";
+        result_scoreText.text = $"SCORE: {GameManager.instance.score}";
 
         ShowButtons();
     }

@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public Player player;
     public bool isGameOver;
     public bool isGameStart;
-
+    public int score;
 
     [SerializeField] CinemachineVirtualCamera vCamera;
     [SerializeField] CinemachineImpulseSource impulseSource;
@@ -110,6 +110,23 @@ public class GameManager : MonoBehaviour
     public void SetTimeScale(float timeScale)
     {
         Time.timeScale = timeScale;
+    }
+
+
+    public void AddScore(int point)
+    {
+        score += point;
+    }
+
+    public void MultipleScore()
+    {
+        // Humanは得点2倍
+        score *= 2;
+    }
+
+    public void DeviseScore()
+    {
+        score /= 2;
     }
 
 }
