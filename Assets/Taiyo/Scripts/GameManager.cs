@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 
 
     [SerializeField] CinemachineVirtualCamera vCamera;
+    [SerializeField] CinemachineImpulseSource impulseSource;
     [SerializeField] float orthoSizeConstruct;
     [SerializeField] float orthoSizeNormal;
     [SerializeField] GameObject panelMessage;
@@ -80,6 +81,13 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
         DisplayMessage("Game Over");
+    }
+
+    public void ShakeCamera(float strength)
+    {
+        impulseSource.m_ImpulseDefinition.m_AmplitudeGain = strength;
+        impulseSource.m_ImpulseDefinition.m_FrequencyGain = strength;
+        impulseSource.GenerateImpulse();
     }
 
 }
