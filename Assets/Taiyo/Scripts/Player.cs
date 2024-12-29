@@ -48,6 +48,7 @@ public class Player : MonoBehaviour
 
     public Vector2 massCenterWorldPos;
     Part rootPart;
+    public bool is_Gameclear = false;
 
 
     void OnDrawGizmos()
@@ -116,6 +117,12 @@ public class Player : MonoBehaviour
 
     void SetInput()
     {
+        if (is_Gameclear)
+        {
+            inputVec = Vector2.zero;
+            return;
+        }
+        
         inputVec = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
         if (Input.GetKey(KeyCode.Space))

@@ -43,7 +43,7 @@ public class GameClearManager : MonoBehaviour
         if (is_gameClear)
         {
             // 起点からプレイヤーの方向に力を加え続ける
-            Debug.Log("AddForce");
+            //Debug.Log("AddForce");
             playerGameObj.GetComponent<Rigidbody2D>().AddForce(forceDirection.normalized * forceMagnitude);
         }
     }
