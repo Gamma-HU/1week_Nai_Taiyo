@@ -18,6 +18,7 @@ MonoBehaviour:
     name: NormalEnemy
     hp: 1
     attack: 1
+    score: 2
     bulletPrefab: {fileID: 2025172839387061428, guid: edfbcafd6d86f4fafa7d14d6b4a0cc7d, type: 3}
     bulletSpeed: 10
     fireRate: 2
@@ -28,6 +29,7 @@ MonoBehaviour:
     name: mukimuki
     hp: 1
     attack: 1
+    score: 1
     bulletPrefab: {fileID: 2025172839387061428, guid: edfbcafd6d86f4fafa7d14d6b4a0cc7d, type: 3}
     bulletSpeed: 5
     fireRate: 5

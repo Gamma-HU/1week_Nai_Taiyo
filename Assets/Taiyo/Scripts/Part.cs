@@ -44,6 +44,10 @@ public class Part : MonoBehaviour
     [SerializeField]
     SpriteRenderer outlineSr;
 
+    public bool isHuman;
+    public bool isRareHuman;
+
+
 
     protected virtual void Awake()
     {

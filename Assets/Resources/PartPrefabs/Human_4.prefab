@@ -276,6 +276,8 @@ MonoBehaviour:
   isConstructMode: 0
   isConnected: 0
   connectPoints: []
+  isHuman: 1
+  isRareHuman: 0
 --- !u!1001 &3926071880767767039
 PrefabInstance:
   m_ObjectHideFlags: 0

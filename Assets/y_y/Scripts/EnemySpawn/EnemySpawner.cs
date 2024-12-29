@@ -130,7 +130,16 @@ public class EnemySpawner : MonoBehaviour
         float distance = 0f;
         foreach (GameObject enemy in tempList)
         {
-            distance = Vector3.Distance(enemy.GetComponent<RectTransform>().anchoredPosition, playerGameObj.GetComponent<RectTransform>().anchoredPosition);
+            if (enemy == null)
+            {
+                continue; // 次のループにスキップ
+            }
+
+            distance = Vector3.Distance(
+                enemy.GetComponent<RectTransform>().anchoredPosition,
+                playerGameObj.GetComponent<RectTransform>().anchoredPosition
+            );
+
             if (distance > radius_max)
             {
                 RemoveEnemiesList(enemy);

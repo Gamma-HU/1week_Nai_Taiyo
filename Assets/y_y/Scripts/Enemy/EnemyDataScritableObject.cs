@@ -54,6 +54,7 @@ public class EnemyData
     public string name;
     public int hp;
     public int attack;
+    public int score;
     public GameObject bulletPrefab; // 弾のPrefab
     public float bulletSpeed; // 弾の速度
     public float fireRate;     // 発射間隔（秒）
