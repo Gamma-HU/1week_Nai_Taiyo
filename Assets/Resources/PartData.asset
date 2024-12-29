@@ -36,8 +36,18 @@ MonoBehaviour:
   - partType: 0
     partPrefab: {fileID: 3486181594879666892, guid: 42580c9d825c141928d9ea042ba1ceef, type: 3}
     name: 
-    hp: 0
+    hp: 1
     text_explaination: 
+  - partType: 0
+    partPrefab: {fileID: 3265629022355717485, guid: 19f044035e4a5437188eb5ce90d075c9, type: 3}
+    name: Human
+    hp: 1
+    text_explaination: 
+  - partType: 0
+    partPrefab: {fileID: 3265629022355717485, guid: 770e5c1fa532f42639f4339d7377f0ce, type: 3}
+    name: Human_rare
+    hp: 1
+    text_explaination: "\u91D1\u6301\u3061"
   weightListPerWave:
   - weights:
     - 1
@@ -45,7 +55,11 @@ MonoBehaviour:
     - 1
     - 1
     - 1
+    - 1
+    - 1
   - weights:
+    - 1
+    - 1
     - 1
     - 1
     - 1
