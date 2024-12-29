@@ -28,7 +28,7 @@ public class CameraController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Transform[] childTransforms = player.GetComponentsInChildren<Transform>();
         List<Transform> parts = new List<Transform>();
@@ -63,7 +63,7 @@ public class CameraController : MonoBehaviour
         // 目標カメラサイズを計算
         if (farthestPart != null)
         {
-            if(constructManager.isConstructMode)
+            if (constructManager.isConstructMode)
             {
                 targetCameraSize = Mathf.Clamp(maxDistance * 1.5f, minCameraSize, maxCameraSize);
             }
