@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject effectFolder;
 
     [SerializeField] public EnemySpawner enemySpawner;
+    [SerializeField] GameObject gameOverButtons;
 
     GameObject textMessageOnThisFrame;
 
@@ -98,6 +99,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         isGameOver = true;
+        gameOverButtons.SetActive(true);
         DisplayMessage("Game Over");
     }
 

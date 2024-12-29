@@ -165,7 +165,7 @@ public class Player : MonoBehaviour
         SetPartPowerParameters();
         SetFuelMax();
 
-        if(part.gameObject.GetComponent<Part>().isHuman)
+        if (part.gameObject.GetComponent<Part>().isHuman)
         {
             GameManager.instance.MultipleScore(); // スコア2倍
         }
@@ -174,6 +174,7 @@ public class Player : MonoBehaviour
             GameManager.instance.MultipleScore();
             GameManager.instance.MultipleScore(); // スコア4倍
         }
+
     }
 
     public void RemovePart(Part part)

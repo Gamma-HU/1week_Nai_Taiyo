@@ -10,7 +10,7 @@ public class Part : MonoBehaviour
 {
     [SerializeField] float hpMax;
     float hp;
-    PartData partData;
+    public PartData partData;
 
     public void Initialize(PartData partData)
     {
@@ -217,6 +217,8 @@ public class Part : MonoBehaviour
 
         GameObject eff = Instantiate(GameManager.instance.equipEffectPfb, GameManager.instance.effectFolder.transform);
         eff.transform.position = _connectPoint2.transform.position;
+
+        AudioSetting.instance.PlaySE(0);
     }
 
     public virtual void Pick()

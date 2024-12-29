@@ -55,7 +55,7 @@ public class EnemySpawner : MonoBehaviour
         }
 
         current_distance = Vector3.Distance(startPosition, playerGameObj.GetComponent<RectTransform>().anchoredPosition); ;
-        if (current_distance >= (max_distance / maxWaves) * (currentWave + 1))
+        if (current_distance >= (max_distance / maxWaves) * currentWave)
         {
             currentWave++;
         }

@@ -161,7 +161,9 @@ public class ConstructManager : MonoBehaviour
             partTextPanel.gameObject.SetActive(true);
             partTextPanel.transform.position = partSelected.transform.position;
             partTextPanel.transform.localPosition += new Vector3(330, 200);
-            partText.text = $"名前：{partSelected}\n";
+            partText.text = partSelected.partData.name + "\n"
+                + "重量：" + partSelected.mass + "\n"
+                + partSelected.partData.text_explaination;
         }
     }
 

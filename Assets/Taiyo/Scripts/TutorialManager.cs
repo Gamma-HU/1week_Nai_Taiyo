@@ -15,6 +15,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] GameObject imageFade;
     [SerializeField] GameObject FuelSlider;
     [SerializeField] GameObject ButtonConstruct;
+    [SerializeField] GameObject ButtonSetting;
 
     bool isClicked;
 
@@ -32,11 +33,15 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
+        //AudioSetting.instance.PlayBGM(1);
+        AudioSetting.instance.InitialSetting();
+
         if (!isSkipTutorial)
         {
             textTutorial.SetActive(false);
             FuelSlider.SetActive(false);
             ButtonConstruct.SetActive(false);
+            ButtonSetting.SetActive(false);
             StartTutorial();
         }
         else
@@ -45,6 +50,7 @@ public class TutorialManager : MonoBehaviour
 
             FuelSlider.SetActive(false);
             ButtonConstruct.SetActive(false);
+            ButtonSetting.SetActive(false);
 
 
             initialFrame.GetComponent<Rigidbody2D>().AddForce(new Vector2(1, 1) * 5, ForceMode2D.Impulse);
@@ -147,6 +153,7 @@ public class TutorialManager : MonoBehaviour
         imageFade.SetActive(false);
         FuelSlider.SetActive(true);
         ButtonConstruct.SetActive(true);
+        ButtonSetting.SetActive(true);
 
     }
 
@@ -171,6 +178,7 @@ public class TutorialManager : MonoBehaviour
         imageFade.SetActive(false);
         FuelSlider.SetActive(true);
         ButtonConstruct.SetActive(true);
+        ButtonSetting.SetActive(true);
     }
 
 }

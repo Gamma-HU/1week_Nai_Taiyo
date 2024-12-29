@@ -44,6 +44,8 @@ public class Part_Shot : Part_Action
             bullet.GetComponent<Rigidbody2D>().AddForce(Quaternion.Euler(0, 0, angle) * shotVec.normalized * shotPower, ForceMode2D.Impulse);
 
             shotTimer = shotSpan;
+
+            AudioSetting.instance.PlaySE(4);
         }
 
 

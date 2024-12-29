@@ -19,5 +19,10 @@ public class TitleAnimationManager : MonoBehaviour
         {
             SceneManager.LoadScene("SceneGame_Taiyo");
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            SceneManager.LoadScene("SceneGame_Taiyo");
+        }
     }
 }
