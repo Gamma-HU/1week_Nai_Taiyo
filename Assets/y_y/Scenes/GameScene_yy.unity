@@ -1764,7 +1764,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -431.78015, y: 170.57}
+  m_AnchoredPosition: {x: -431.78012, y: 170.57}
   m_SizeDelta: {x: -1402.04, y: -441.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &489648602
@@ -3569,10 +3569,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameClearManager
       objectReference: {fileID: 0}
-    - target: {fileID: 5572556629451108579, guid: 7387e73b0e3e946398e25b6a4a6e57a6, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6145413550892937370, guid: 7387e73b0e3e946398e25b6a4a6e57a6, type: 3}
       propertyPath: m_Camera
       value: 
@@ -5313,6 +5309,8 @@ MonoBehaviour:
   isConstructMode: 0
   isConnected: 0
   connectPoints: []
+  isHuman: 0
+  isRareHuman: 0
 --- !u!1 &1560547385
 GameObject:
   m_ObjectHideFlags: 0

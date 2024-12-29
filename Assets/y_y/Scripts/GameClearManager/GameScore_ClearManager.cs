@@ -65,12 +65,12 @@ public class GameScore_ClearManager : MonoBehaviour
         }
     }
 
-    private void GameClear()
+    [ContextMenu("GameClear")]
+    public void GameClear()
     {
 
         //Time.timeScale = 0f;
-        // 初期状態を設定
-        clearText.gameObject.SetActive(true);
+        
 
         RemainDistanceText.text = "GOAL!";
         current_scoreText.text = $"GOAL!";
@@ -90,12 +90,21 @@ public class GameScore_ClearManager : MonoBehaviour
 
         //Camera.main.transform.DORotate(cameraRotation, duration, RotateMode.FastBeyond360);  
         ClearUI.SetActive(true);
+        clearText.gameObject.SetActive(true);
+
+        AnimateClearText();
     }
 
     public void PushRestartButton()
     {
         //Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void PushTitleButton()
+    {
+        //Time.timeScale = 1f;
+        SceneManager.LoadScene("TitleScene");
     }
 
     [ContextMenu("AnimateClearText")]
