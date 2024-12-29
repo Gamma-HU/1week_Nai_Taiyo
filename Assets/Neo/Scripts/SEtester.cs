@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SEtester : MonoBehaviour
 {
+    //補足：shotsoundのピッチは1.3、hitsoundのピッチは3(MAX)です
+
     //enginesoundのvolumeは変数に設定してエンジンの数に応じて音量を上げると良いかも？
 
     [SerializeField]
