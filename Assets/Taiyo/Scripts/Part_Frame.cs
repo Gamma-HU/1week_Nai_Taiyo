@@ -23,15 +23,31 @@ public class Part_Frame : Part
         connectedParts.Remove(part);
     }
 
-    /*
-        public void AddConnectedToChildPoint(ConnectPoint connectPoint)
+    public override void Damage(float damage)
+    {
+        int childCount = 0;
+        foreach (Part part in connectedParts)
         {
-            connectedToChildPoins.Add(connectPoint);
+            if (!part.isCockpit)
+            {
+                childCount++;
+            }
         }
 
-        public void RemoveConnectedToChildPoint(ConnectPoint connectPoint)
+        if (childCount > 0)
         {
-            connectedToChildPoins.Remove(connectPoint);
+            for (int i = childCount - 1; i >= 0; i--)
+            {
+                Part part = connectedParts[i];
+                if (!part.isCockpit)
+                {
+                    part.Damage(damage / childCount);
+                }
+            }
         }
-        */
+        else
+        {
+            base.Damage(damage);
+        }
+    }
 }
