@@ -46,7 +46,7 @@ public class GameScore_ClearManager : MonoBehaviour
         current_distance = Vector3.Distance(startPosition, playerGameObj.GetComponent<RectTransform>().anchoredPosition);
         float remainDistance = goalDistance - current_distance;
         if (remainDistance <= 0f) remainDistance = 0f;
-        RemainDistanceText.text = remainDistance.ToString("F0") + "m";
+        RemainDistanceText.text = "GOAL: " + remainDistance.ToString("F0") + "m";
         current_scoreText.text = $"SCORE: {GameManager.instance.score}";
         if (current_distance > goalDistance)
         {
