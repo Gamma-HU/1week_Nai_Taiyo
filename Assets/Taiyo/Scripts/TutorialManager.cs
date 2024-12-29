@@ -166,7 +166,7 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator StartGameCoroutine()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
         imageFade.SetActive(false);
         FuelSlider.SetActive(true);
         ButtonConstruct.SetActive(true);

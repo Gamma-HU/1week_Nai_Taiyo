@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TitleAnimationManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    float lifeTime = 11;
+
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        lifeTime -= Time.deltaTime;
+        if (lifeTime < 0)
+        {
+            SceneManager.LoadScene("SceneGame_Taiyo");
+        }
     }
 }
