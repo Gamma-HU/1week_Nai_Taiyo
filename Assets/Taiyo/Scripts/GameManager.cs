@@ -21,6 +21,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject hPbarPartPfb;
     [SerializeField] public GameObject hpbarFolder;
 
+
+    [SerializeField] public GameObject equipEffectPfb;
+    [SerializeField] public GameObject damageEffectPfb;
+    [SerializeField] public GameObject peelOffEffectPfb;
+    [SerializeField] public GameObject effectFolder;
+
     GameObject textMessageOnThisFrame;
 
 
@@ -49,6 +55,7 @@ public class GameManager : MonoBehaviour
         vCamera.m_Lens.OrthographicSize = orthoSizeConstruct;
         ConstructManager.instance.StartConstructMode();
         player.StartConstructMode();
+        SetTimeScale(0);
     }
 
     public void EndConstructMode()
@@ -62,6 +69,7 @@ public class GameManager : MonoBehaviour
         vCamera.m_Lens.OrthographicSize = orthoSizeNormal;
         ConstructManager.instance.EndConstructMode();
         player.EndConstructMode();
+        SetTimeScale(1);
     }
 
     public void DisplayMessage(string message)
@@ -85,9 +93,13 @@ public class GameManager : MonoBehaviour
 
     public void ShakeCamera(float strength)
     {
-        impulseSource.m_ImpulseDefinition.m_AmplitudeGain = strength;
-        impulseSource.m_ImpulseDefinition.m_FrequencyGain = strength;
-        impulseSource.GenerateImpulse();
+        //impulseSource.GenerateImpulse();
+        impulseSource.GenerateImpulseWithForce(strength);
+    }
+
+    public void SetTimeScale(float timeScale)
+    {
+        Time.timeScale = timeScale;
     }
 
 }

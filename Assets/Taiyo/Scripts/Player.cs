@@ -20,8 +20,6 @@ public class Player : MonoBehaviour
     [SerializeField] Transform partFolder;
 
     [SerializeField] Slider fuelSlider;
-    [SerializeField] public GameObject equipEffectPfb;
-    [SerializeField] public GameObject damageEffectPfb;
 
 
 

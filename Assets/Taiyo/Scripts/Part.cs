@@ -96,12 +96,13 @@ public class Part : MonoBehaviour
             damageParameter.collisionCount += 1;
             Damage(damageParameter.damage);
 
-            GameObject eff = Instantiate(GameManager.instance.player.damageEffectPfb, transform);
+            GameObject eff = Instantiate(GameManager.instance.damageEffectPfb, GameManager.instance.effectFolder.transform);
             eff.transform.position = other.ClosestPoint(transform.position);
+            //eff.transform.localScale = new Vector3(1, 1, 1) * 0.5f;
 
             Destroy(other.gameObject);
 
-            GameManager.instance.ShakeCamera(3);
+            GameManager.instance.ShakeCamera(damageParameter.damage);
         }
     }
 
@@ -205,7 +206,7 @@ public class Part : MonoBehaviour
         rb.isKinematic = true;
 
 
-        GameObject eff = Instantiate(GameManager.instance.player.equipEffectPfb, transform);
+        GameObject eff = Instantiate(GameManager.instance.equipEffectPfb, GameManager.instance.effectFolder.transform);
         eff.transform.position = _connectPoint2.transform.position;
     }
 
@@ -243,7 +244,7 @@ public class Part : MonoBehaviour
 
         if (Input.GetMouseButton(1))
         {
-            transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 180 * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 180 * Time.unscaledDeltaTime);
         }
 
         (ConnectPoint point1, ConnectPoint point2) = CheckConnectable();
@@ -455,6 +456,10 @@ public class Part : MonoBehaviour
         {
             hp = 0;
             DeattachFromParent();
+
+            GameObject eff = Instantiate(GameManager.instance.peelOffEffectPfb, GameManager.instance.effectFolder.transform);
+            eff.transform.position = transform.position;
+            eff.transform.localScale = new Vector3(1, 1, 1) * 0.5f;
         }
 
 

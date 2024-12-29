@@ -6,7 +6,7 @@ using TMPro;
 public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager instance;
-    bool isSkipTutorial;
+    [SerializeField] bool isSkipTutorial;
 
     [SerializeField] GameObject textTutorial;
     [SerializeField] GameObject initialFrame;
@@ -32,10 +32,32 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
-        textTutorial.SetActive(false);
-        FuelSlider.SetActive(false);
-        ButtonConstruct.SetActive(false);
-        StartTutorial();
+        if (!isSkipTutorial)
+        {
+            textTutorial.SetActive(false);
+            FuelSlider.SetActive(false);
+            ButtonConstruct.SetActive(false);
+            StartTutorial();
+        }
+        else
+        {
+            textTutorial.SetActive(false);
+            imageFade.SetActive(false);
+            FuelSlider.SetActive(true);
+            ButtonConstruct.SetActive(true);
+
+
+
+            initialFrame.GetComponent<Rigidbody2D>().AddForce(new Vector2(1, 1) * 5, ForceMode2D.Impulse);
+            initialFrame.GetComponent<Rigidbody2D>().AddTorque(10, ForceMode2D.Impulse);
+
+            initialJet.GetComponent<Rigidbody2D>().AddForce(new Vector2(-1, 2).normalized * 5, ForceMode2D.Impulse);
+            initialJet.GetComponent<Rigidbody2D>().AddTorque(-3, ForceMode2D.Impulse);
+
+            initialTank.GetComponent<Rigidbody2D>().AddForce(new Vector2(-1, -1) * 5, ForceMode2D.Impulse);
+            initialTank.GetComponent<Rigidbody2D>().AddTorque(3, ForceMode2D.Impulse);
+        }
+
     }
 
     void Update()
@@ -87,16 +109,13 @@ public class TutorialManager : MonoBehaviour
         if (coroutine != null) StopCoroutine(coroutine);
         textTutorial.SetActive(false);
 
-        initialFrame.SetActive(true);
         initialFrame.GetComponent<Rigidbody2D>().AddForce(new Vector2(1, 1) * 5, ForceMode2D.Impulse);
         initialFrame.GetComponent<Rigidbody2D>().AddTorque(10, ForceMode2D.Impulse);
 
-        initialJet.SetActive(true);
         initialJet.GetComponent<Rigidbody2D>().AddForce(new Vector2(-1, 2).normalized * 5, ForceMode2D.Impulse);
         initialJet.GetComponent<Rigidbody2D>().AddTorque(-3, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(1);
-        initialTank.SetActive(true);
         initialTank.GetComponent<Rigidbody2D>().AddForce(new Vector2(-1, -1) * 5, ForceMode2D.Impulse);
         initialTank.GetComponent<Rigidbody2D>().AddTorque(3, ForceMode2D.Impulse);
 
