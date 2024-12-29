@@ -9,7 +9,8 @@ public class EnemySpawner : MonoBehaviour
     [Header("Wave進行による難易度上昇率")]　[SerializeField] private float difficultyScalingFactor = 0.75f;
     [Header("Waveの数")]　[SerializeField] private int maxWaves = 10;
     [Header("スタート地点の座標")]　[SerializeField] private Vector3 startPosition = new Vector3(0, 0, 0);
-
+    [Header("Enemyの湧き上限数")]　[SerializeField] private int maxEnemiesNum = 50;
+    
     private SpawnCaluculateLib _spawnCaluculateLib;
     private GameObject playerGameObj;
     public int currentWave = 1;
@@ -76,9 +77,10 @@ public class EnemySpawner : MonoBehaviour
     [ContextMenu("Spawn")]
     public void Spawn()
     {
-        isSpawning = true;
         int numberToSpawn = EnemiesPerWave();
         //Debug.Log("Spawning " + numberToSpawn + " enemies");
+        
+        if (spawnedEnemies.Count + + numberToSpawn >= maxEnemiesNum) return; //上限数を超えていたらスポーンしない
         
         // カメラの範囲外に敵をスポーンする
         Vector3 camera_bottomLeft = _camera.ViewportToWorldPoint(Vector2.zero);
