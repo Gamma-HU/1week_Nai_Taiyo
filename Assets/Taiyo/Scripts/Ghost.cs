@@ -18,8 +18,8 @@ public class Ghost : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isCollide) GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 0.3f);
-        else GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.3f);
+        if (isCollide) GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 0.6f);
+        else GetComponent<SpriteRenderer>().color = new Color(0.5f, 1, 0.5f, 0.6f);
     }
 
 

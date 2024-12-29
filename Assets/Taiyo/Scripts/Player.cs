@@ -45,6 +45,9 @@ public class Player : MonoBehaviour
     Color fuelColorNormal;
     Color fuelColorEmpty = new Color(1, 0, 0, 1);
 
+    public Vector2 massCenterWorldPos;
+
+
     void OnDrawGizmos()
     {
         if (rb != null)
@@ -188,6 +191,12 @@ public class Player : MonoBehaviour
             ConstructManager.instance.SetConstructingParts(part);
         }
 
+        SetMass();
+        ConstructManager.instance.SetMassText(rb.mass);
+        ConstructManager.instance.SetRotationForceText(angleCorrectionForceRight, angleCorrectionForceLeft);
+        ConstructManager.instance.SetFuelConsumptionText(fuelConsumptionSum);
+        ConstructManager.instance.SetFuelVolumeText(fuelMax);
+
         isConstructMode = true;
     }
 
@@ -254,7 +263,10 @@ public class Player : MonoBehaviour
         rb.mass = mass;
 
         //重心を設定
-        rb.centerOfMass = transform.InverseTransformPoint(massCenter / mass);
+        massCenterWorldPos = massCenter / mass;
+        rb.centerOfMass = transform.InverseTransformPoint(massCenterWorldPos);
+
+        ConstructManager.instance.SetMassText(mass);
     }
 
     void SetPartPowerParameters()
@@ -292,6 +304,9 @@ public class Player : MonoBehaviour
         angleCorrectionForceRight = forceRight;
 
         fuelConsumptionSum = fuelSum;
+
+        ConstructManager.instance.SetRotationForceText(forceRight, forceLeft);
+        ConstructManager.instance.SetFuelConsumptionText(fuelSum);
     }
 
     public void SetFuelMax()
@@ -306,6 +321,7 @@ public class Player : MonoBehaviour
             }
         }
         fuelMax = newFuelMax;
+        ConstructManager.instance.SetFuelVolumeText(fuelMax);
     }
 
 
@@ -415,7 +431,7 @@ public class Player : MonoBehaviour
         if (fuel < fuelMax) fuel += fuelRecoverySpeed * fuelMax * Time.deltaTime;
 
         //燃料が空の状態から燃料が回復した場合（消費燃料が多いほど復帰は遅い）
-        if (isFuelEmpty && (fuel > fuelUsableMin * fuelConsumptionSum || fuel == fuelMax))
+        if (isFuelEmpty && fuel == fuelMax)
         {
             isFuelEmpty = false;
             fuelSlider.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = fuelColorNormal;

@@ -7,7 +7,13 @@ using UnityEngine;
 
 public class Part : MonoBehaviour
 {
-    [SerializeField] public float HP = 100;
+    protected float hp;
+
+    public void Initialize(PartData partData)
+    {
+        hp = partData.hp;
+    }
+
     public float mass;
     //public bool isFrame;
     public bool isCockpit;
@@ -69,12 +75,13 @@ public class Part : MonoBehaviour
         if (other.gameObject.tag == "DamageSource")
         {
             DamageParameter damageParameter = other.gameObject.GetComponent<DamageParameter>();
-            this.HP -= damageParameter.damage;
+            this.hp -= damageParameter.damage;
             damageParameter.collisionCount += 1;
-            if (this.HP <= 0)
+            if (this.hp <= 0)
             {
                 DeattachFromParent();
             }
+            Destroy(other.gameObject);
         }
     }
 
@@ -84,30 +91,19 @@ public class Part : MonoBehaviour
         ghost.GetComponent<SpriteRenderer>().sprite = GetComponent<SpriteRenderer>().sprite;
         ghost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.3f);  //透明度30%
 
-        if (GetComponent<BoxCollider2D>())
-        {
-            ghost.AddComponent<BoxCollider2D>();
-        }
-        else if (GetComponent<CircleCollider2D>())
-        {
-            ghost.AddComponent<CircleCollider2D>();
-        }
-        else if (GetComponent<PolygonCollider2D>())
-        {
-            ghost.AddComponent<PolygonCollider2D>();
-        }
-        else if (GetComponent<CapsuleCollider2D>())
+
+        if (GetComponent<CapsuleCollider2D>())
         {
             ghost.AddComponent<CapsuleCollider2D>();
         }
-        else if (GetComponent<EdgeCollider2D>())
-        {
-            ghost.AddComponent<EdgeCollider2D>();
-        }
 
-        ghost.GetComponent<Collider2D>().CopyCollider2D(GetComponent<Collider2D>()); //コライダーをコピー
+        ghost.GetComponent<CapsuleCollider2D>().direction = GetComponent<CapsuleCollider2D>().direction;
+        ghost.GetComponent<CapsuleCollider2D>().size = GetComponent<CapsuleCollider2D>().size;
+        ghost.GetComponent<CapsuleCollider2D>().offset = GetComponent<CapsuleCollider2D>().offset;
+
         ghost.GetComponent<Collider2D>().isTrigger = true;
-        ghost.SetActive(false);
+        // ghost.SetActive(false);
+        SetAllGhostActive(false);
 
 
     }
@@ -182,8 +178,8 @@ public class Part : MonoBehaviour
         isConnected = true;
         isPick = false;
         canConnect = false;
-        ghost.SetActive(false);
-
+        // ghost.SetActive(false);
+        SetAllGhostActive(false);
 
         GetComponent<Collider2D>().isTrigger = true;
         rb.isKinematic = true;
@@ -197,7 +193,7 @@ public class Part : MonoBehaviour
 
         isPick = true;
         isConnected = false;
-        GameManager.instance.player.RemovePart(this);
+        if (GameManager.instance.player.PartsList.Contains(this)) GameManager.instance.player.RemovePart(this);
         PartSpawner.instance.AddFloatingPart(this);
 
         foreach (ConnectPoint connectPoint in connectPoints)
@@ -234,7 +230,8 @@ public class Part : MonoBehaviour
         }
         else
         {
-            ghost.SetActive(false);
+            // ghost.SetActive(false);
+            SetAllGhostActive(false);
         }
 
         if (point1 && point2 && !ghost.GetComponent<Ghost>().IsCollide)
@@ -253,7 +250,8 @@ public class Part : MonoBehaviour
         rb.isKinematic = false;
         isPick = false;
         canConnect = false;
-        ghost.SetActive(false);
+        // ghost.SetActive(false);
+        SetAllGhostActive(false);
     }
 
     public void DeattachFromParent()
@@ -358,18 +356,50 @@ public class Part : MonoBehaviour
         }
 
         _angle = minAngle;
+        List<(GameObject, Vector3)> list = GetChildGhosts(this, transform.position);
+        foreach((GameObject g, Vector3 pos) in list)
+        {
+            // g.SetActive(true);
+            SetAllGhostActive(true);
+            g.transform.position = transform.position;
 
-        ghost.SetActive(true);
-        ghost.transform.position = transform.position;
+            //connectPointを中心に回転
+            Vector3 direction = g.transform.position - myPoint.transform.position;
+            direction = Quaternion.Euler(0, 0, minAngle) * direction;
+            g.transform.position = myPoint.transform.position + direction;
+            g.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, minAngle);
 
-        //connectPointを中心に回転
-        Vector3 direction = ghost.transform.position - myPoint.transform.position;
-        direction = Quaternion.Euler(0, 0, minAngle) * direction;
-        ghost.transform.position = myPoint.transform.position + direction;
-        ghost.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, minAngle);
+            //targetPointに移動
+            g.transform.position += targetPoint.transform.position - myPoint.transform.position + pos;
+        }
 
-        //targetPointに移動
-        ghost.transform.position += targetPoint.transform.position - myPoint.transform.position;
     }
 
+    List<(GameObject, Vector3)> GetChildGhosts(Part part, Vector3 parentPos) //子供のゴーストを全部持ってきて相対座標とともに返す
+    {
+        List<(GameObject, Vector3)> list = new List<(GameObject, Vector3)>();
+        list.Add((part.ghost, part.transform.position - parentPos));
+        foreach (ConnectPoint connectPoint in part.connectPoints)
+        {
+            if (connectPoint.isConected && connectPoint.isParent) 
+            {
+                Part childPart = connectPoint.targetConnectPoint.transform.parent.GetComponent<Part>();
+
+                if (childPart != null)
+                {
+                    list.AddRange(GetChildGhosts(childPart, parentPos));
+                }
+            }
+        }
+        return list;
+    }
+
+    void SetAllGhostActive(bool active)
+    {
+        List<(GameObject, Vector3)> list = GetChildGhosts(this, Vector3.zero);
+        foreach((GameObject g, Vector3 pos) in list)
+        {
+            g.SetActive(active);
+        }
+    }
 }

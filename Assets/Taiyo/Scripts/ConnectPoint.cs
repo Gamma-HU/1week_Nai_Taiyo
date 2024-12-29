@@ -24,6 +24,8 @@ public class ConnectPoint : MonoBehaviour
         {
             angleList.Add(i * 45);
         }
+
+        isFrameMode = true;
     }
 
     public void Connect(ConnectPoint targetPoint)
@@ -74,12 +76,13 @@ public class ConnectPoint : MonoBehaviour
     public void ActivateImage(bool isActive)
     {
         GetComponent<Image>().enabled = isActive;
+        transform.GetChild(0).GetComponent<Image>().enabled = isActive;
     }
 
     public void SetColor(Color color)
     {
 
-        GetComponent<Image>().color = color;
+        transform.GetChild(0).GetComponent<Image>().color = color;
 
     }
 

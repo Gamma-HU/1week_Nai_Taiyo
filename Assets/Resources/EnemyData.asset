@@ -35,8 +35,8 @@ MonoBehaviour:
     text_explaination: 
   weightListPerWave:
   - weights:
-    - 0
+    - 1
     - 1
   - weights:
     - 1
-    - 0
+    - 1
