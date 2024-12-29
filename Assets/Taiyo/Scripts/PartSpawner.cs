@@ -160,4 +160,14 @@ public class PartSpawner : MonoBehaviour
             }
         }
     }
+
+    public void EliminateAllParts()
+    {
+        foreach (Part part in floatingPartList)
+        {
+            Destroy(part.gameObject);
+        }
+        
+        floatingPartList.Clear();
+    }
 }
