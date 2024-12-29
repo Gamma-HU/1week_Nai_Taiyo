@@ -7,12 +7,17 @@ using UnityEngine;
 
 public class Part : MonoBehaviour
 {
-    protected float hp;
+    [SerializeField] float hpMax;
+    float hp;
+    PartData partData;
 
     public void Initialize(PartData partData)
     {
-        hp = partData.hp;
+        this.partData = partData;
+        hpMax = this.partData.hp;
+        hp = hpMax;
     }
+
 
     public float mass;
     //public bool isFrame;
@@ -31,6 +36,9 @@ public class Part : MonoBehaviour
     float _angle;
 
     Rigidbody2D rb;
+
+    HPbarPart hpbar;
+    float damageTimer;
 
 
     protected virtual void Awake()
@@ -55,7 +63,7 @@ public class Part : MonoBehaviour
 
         InitializeGhost();
 
-
+        hp = hpMax;
 
     }
 
@@ -67,20 +75,26 @@ public class Part : MonoBehaviour
             Picking();
         }
 
+        if (damageTimer > 0)
+        {
+            damageTimer -= Time.deltaTime;
+        }
+        else if (hp < hpMax)
+        {
+            Recover();
+        }
 
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (!isConnected) return;
+
         if (other.gameObject.tag == "DamageSource")
         {
             DamageParameter damageParameter = other.gameObject.GetComponent<DamageParameter>();
-            this.hp -= damageParameter.damage;
             damageParameter.collisionCount += 1;
-            if (this.hp <= 0)
-            {
-                DeattachFromParent();
-            }
+            Damage(damageParameter.damage);
             Destroy(other.gameObject);
         }
     }
@@ -260,6 +274,7 @@ public class Part : MonoBehaviour
         GameManager.instance.player.RemovePart(this);
         PartSpawner.instance.AddFloatingPart(this);
 
+
         foreach (ConnectPoint connectPoint in connectPoints)
         {
             if (connectPoint.isConected && !connectPoint.isParent) //子としてくっついていた場合
@@ -272,6 +287,19 @@ public class Part : MonoBehaviour
                 connectPoint.QuitConnect();
             }
         }
+
+        if (!GetComponent<Rigidbody2D>()) gameObject.AddComponent<Rigidbody2D>(); //Rigidbody2Dを追加
+        rb = GetComponent<Rigidbody2D>();
+        rb.mass = mass;
+        rb.drag = 0.2f;
+        rb.angularDrag = 0.1f;
+        rb.gravityScale = 0;
+        rb.isKinematic = false;
+        GetComponent<Collider2D>().isTrigger = false;
+
+        rb.AddForce((transform.position - GameManager.instance.player.transform.position).normalized * mass * 10, ForceMode2D.Impulse);
+        rb.AddTorque(mass * 10, ForceMode2D.Impulse);
+
 
     }
     (ConnectPoint, ConnectPoint) CheckConnectable()
@@ -357,7 +385,7 @@ public class Part : MonoBehaviour
 
         _angle = minAngle;
         List<(GameObject, Vector3)> list = GetChildGhosts(this, transform.position);
-        foreach((GameObject g, Vector3 pos) in list)
+        foreach ((GameObject g, Vector3 pos) in list)
         {
             // g.SetActive(true);
             SetAllGhostActive(true);
@@ -381,7 +409,7 @@ public class Part : MonoBehaviour
         list.Add((part.ghost, part.transform.position - parentPos));
         foreach (ConnectPoint connectPoint in part.connectPoints)
         {
-            if (connectPoint.isConected && connectPoint.isParent) 
+            if (connectPoint.isConected && connectPoint.isParent)
             {
                 Part childPart = connectPoint.targetConnectPoint.transform.parent.GetComponent<Part>();
 
@@ -397,9 +425,55 @@ public class Part : MonoBehaviour
     void SetAllGhostActive(bool active)
     {
         List<(GameObject, Vector3)> list = GetChildGhosts(this, Vector3.zero);
-        foreach((GameObject g, Vector3 pos) in list)
+        foreach ((GameObject g, Vector3 pos) in list)
         {
             g.SetActive(active);
+        }
+    }
+
+    public virtual void Damage(float damage)
+    {
+        hp -= damage;
+        damageTimer = 5f;
+        if (hpbar == null)
+        {
+            GameObject hpbarObj = Instantiate(GameManager.instance.hPbarPartPfb, GameManager.instance.hpbarFolder.transform);
+            hpbar = hpbarObj.GetComponent<HPbarPart>();
+        }
+
+        if (hp <= 0)
+        {
+            hp = 0;
+            DeattachFromParent();
+        }
+
+
+        hpbar.SetPart(this);
+        hpbar.SetHP(hp / hpMax);
+    }
+
+    void Recover()
+    {
+        if (isConnected)
+        {
+            hp += hpMax * GameManager.instance.player.partRecoverySpeed * Time.deltaTime;
+        }
+        else
+        {
+            hp += hpMax * 0.1f * Time.deltaTime; //浮いているパーツは10秒で回復
+        }
+
+
+        if (hp > hpMax)
+        {
+            hp = hpMax;
+            Destroy(hpbar.gameObject);
+            return;
+        }
+
+        if (hpbar)
+        {
+            hpbar.SetHP(hp / hpMax);
         }
     }
 }
