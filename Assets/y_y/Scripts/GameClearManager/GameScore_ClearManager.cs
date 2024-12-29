@@ -31,6 +31,10 @@ public class GameScore_ClearManager : MonoBehaviour
     private bool is_gameClear = false;
     private Vector2 forceDirection;
 
+    [SerializeField] private EnemySpawner enemySpawner;
+    [SerializeField] private PartSpawner partSpawner;
+    [SerializeField] private GameObject CanvasUI;
+
     void Start()
     {
         playerGameObj = GameObject.FindGameObjectWithTag("Player");
@@ -46,7 +50,11 @@ public class GameScore_ClearManager : MonoBehaviour
         current_scoreText.text = $"SCORE: {GameManager.instance.score}";
         if (current_distance > goalDistance)
         {
-            GameClear();
+            if (!is_gameClear)
+            {
+                GameClear();
+            }
+            
         }
 
         if (is_score_anim)
@@ -70,7 +78,41 @@ public class GameScore_ClearManager : MonoBehaviour
     {
 
         //Time.timeScale = 0f;
-        
+        if(enemySpawner == null || partSpawner == null || CanvasUI == null)
+        {
+            Debug.LogError("スクリプトにenemySpawnerとpartSpawnerとcanvasUIをアタッチしてほしい気持ち(by yy)");
+        }
+        else
+        {
+            CanvasUI.SetActive(false);
+            enemySpawner.StopSpawn();
+            partSpawner.StopSpawn();
+            enemySpawner.EliminateAllEnemies();
+            partSpawner.EliminateAllParts();
+        }
+
+        GameObject[] damageSources = GameObject.FindGameObjectsWithTag("DamageSource");
+
+        // 敵の弾を消す
+        foreach (GameObject damageSource in damageSources)
+        {
+            if (damageSource != null)
+            {
+                Destroy(damageSource);
+            }
+        }
+
+        GameObject[] playerBullets = GameObject.FindGameObjectsWithTag("PlayerBullet");
+
+        // 敵の弾を消す
+        foreach (GameObject playerBullet in playerBullets)
+        {
+            if (playerBullets != null)
+            {
+                Destroy(playerBullet);
+            }
+        }
+
 
         RemainDistanceText.text = "GOAL!";
         current_scoreText.text = $"GOAL!";
