@@ -19,7 +19,7 @@ public class NormalEnemy : Enemy
 
     void Update()
     {
-        Debug.Log(fireCooldown);
+        //Debug.Log(fireCooldown);
         // プレイヤーが存在する場合のみ動作
         if (player != null)
         {
