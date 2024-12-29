@@ -364,6 +364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   constructRange: 20
   connectPointDistance: 2
+  isConstructMode: 0
   panelConstructScreen: {fileID: 140055829}
   massText: {fileID: 310848382}
   massPosObj: {fileID: 1349440592}
@@ -7514,7 +7515,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 416199625744945740, guid: dddb9d5759ce4450d9cf4f4ea981c986, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 416199625744945740, guid: dddb9d5759ce4450d9cf4f4ea981c986, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8382,7 +8383,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1431613856543100579, guid: 60561588d6006456c954631562002081, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1431613856543100579, guid: 60561588d6006456c954631562002081, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
