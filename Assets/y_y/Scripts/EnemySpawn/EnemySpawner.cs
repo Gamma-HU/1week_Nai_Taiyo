@@ -157,4 +157,9 @@ public class EnemySpawner : MonoBehaviour
 
         spawnedEnemies.Clear();
     }
+
+    public void StopSpawn()
+    {
+        isSpawning = false;
+    }
 }
