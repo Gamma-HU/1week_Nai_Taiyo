@@ -159,10 +159,10 @@ MonoBehaviour:
   mass: 1
   isCockpit: 0
   isConstructMode: 0
-  isConected: 0
+  isConnected: 0
   connectPoints: []
   shotVec: {x: 0, y: 1}
-  shotPower: 10
+  shotPower: 30
   shotSpan: 0.2
   bulletPfb_Push: {fileID: 2405065536295411857, guid: 6295f14c88eef43e392144bf56dada07, type: 3}
   bulletPfb_Hold: {fileID: 1825426770083038263, guid: d6ebf6df63be2493baa1f89b7df3259c, type: 3}
@@ -326,11 +326,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7925515488180141155, guid: a2678865571fe435d9c57ecc4cc5f6ba, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0.3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7925515488180141155, guid: a2678865571fe435d9c57ecc4cc5f6ba, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0.3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7925515488180141155, guid: a2678865571fe435d9c57ecc4cc5f6ba, type: 3}
       propertyPath: m_LocalPosition.x

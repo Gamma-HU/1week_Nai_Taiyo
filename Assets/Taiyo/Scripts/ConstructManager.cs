@@ -73,6 +73,9 @@ public class ConstructManager : MonoBehaviour
                 }
             }
         }
+
+
+        massPosObj.transform.position = player.massCenterWorldPos;
     }
 
     public void StartConstructMode()
@@ -131,11 +134,9 @@ public class ConstructManager : MonoBehaviour
         }
     }
 
-    public void SetMassTextAndPos(float mass, Vector2 pos)
+    public void SetMassText(float mass)
     {
         massText.text = "総重量： " + mass.ToString("F2");
-        massPosObj.transform.position = pos;
-        Debug.Log(pos);
     }
 
     public void SetFuelVolumeText(float fuelVolume)
