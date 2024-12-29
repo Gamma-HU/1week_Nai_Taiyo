@@ -85,9 +85,13 @@ public class GameManager : MonoBehaviour
 
     public void ShakeCamera(float strength)
     {
-        impulseSource.m_ImpulseDefinition.m_AmplitudeGain = strength;
-        impulseSource.m_ImpulseDefinition.m_FrequencyGain = strength;
-        impulseSource.GenerateImpulse();
+        //impulseSource.GenerateImpulse();
+        impulseSource.GenerateImpulseWithForce(strength);
+    }
+
+    public void SetTimeScale(float timeScale)
+    {
+        Time.timeScale = timeScale;
     }
 
 }

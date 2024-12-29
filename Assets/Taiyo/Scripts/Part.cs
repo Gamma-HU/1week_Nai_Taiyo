@@ -101,7 +101,7 @@ public class Part : MonoBehaviour
 
             Destroy(other.gameObject);
 
-            GameManager.instance.ShakeCamera(3);
+            GameManager.instance.ShakeCamera(damageParameter.damage);
         }
     }
 
@@ -243,7 +243,7 @@ public class Part : MonoBehaviour
 
         if (Input.GetMouseButton(1))
         {
-            transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 180 * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 180 * Time.unscaledDeltaTime);
         }
 
         (ConnectPoint point1, ConnectPoint point2) = CheckConnectable();
