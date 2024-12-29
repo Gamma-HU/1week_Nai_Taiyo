@@ -6,7 +6,7 @@ using TMPro;
 public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager instance;
-    [SerializeField] bool isSkipTutorial;
+    [SerializeField] static bool isSkipTutorial;
 
     [SerializeField] GameObject textTutorial;
     [SerializeField] GameObject initialFrame;
@@ -72,6 +72,7 @@ public class TutorialManager : MonoBehaviour
     public void StartTutorial()
     {
         StartCoroutine(TutrialCoroutine());
+        isSkipTutorial = true;
     }
 
     IEnumerator TutrialCoroutine()
