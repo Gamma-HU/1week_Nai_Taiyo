@@ -95,7 +95,13 @@ public class Part : MonoBehaviour
             DamageParameter damageParameter = other.gameObject.GetComponent<DamageParameter>();
             damageParameter.collisionCount += 1;
             Damage(damageParameter.damage);
+
+            GameObject eff = Instantiate(GameManager.instance.player.damageEffectPfb, transform);
+            eff.transform.position = other.ClosestPoint(transform.position);
+
             Destroy(other.gameObject);
+
+            GameManager.instance.ShakeCamera(3);
         }
     }
 
@@ -197,6 +203,10 @@ public class Part : MonoBehaviour
 
         GetComponent<Collider2D>().isTrigger = true;
         rb.isKinematic = true;
+
+
+        GameObject eff = Instantiate(GameManager.instance.player.equipEffectPfb, transform);
+        eff.transform.position = _connectPoint2.transform.position;
     }
 
     public virtual void Pick()

@@ -19,7 +19,7 @@ public class ConstructManager : MonoBehaviour
 
     public bool isConstructMode;
     Part partPicking;
-
+    [SerializeField] GameObject buttonConstruct;
     [SerializeField] GameObject panelConstructScreen;
     [SerializeField] TextMeshProUGUI massText;
     [SerializeField] GameObject massPosObj;
@@ -90,6 +90,7 @@ public class ConstructManager : MonoBehaviour
 
         isConstructMode = true;
         panelConstructScreen.SetActive(true);
+        buttonConstruct.SetActive(false);
     }
 
     public void EndConstructMode()
@@ -102,6 +103,7 @@ public class ConstructManager : MonoBehaviour
 
         isConstructMode = false;
         panelConstructScreen.SetActive(false);
+        buttonConstruct.SetActive(true);
     }
 
     public void SetConstructingParts(Part part)
