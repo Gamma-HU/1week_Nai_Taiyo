@@ -34,7 +34,7 @@ public class Bullet_Homing : Bullet
         if (target)
         {
             targetMarker = Instantiate(targetMarkerPfb, target.transform);
-            targetMarker.transform.lossyScale.Set(1, 1, 1);
+            targetMarker.transform.localScale = Vector3.one / targetMarker.transform.parent.localScale.x;
         }
         rb = GetComponent<Rigidbody2D>();
         speed = rb.velocity.magnitude;
@@ -47,6 +47,8 @@ public class Bullet_Homing : Bullet
             rb.AddForce((target.transform.position - transform.position).normalized * attractionForce * speed);
             rb.velocity = rb.velocity.normalized * speed;
         }
+
+        transform.up = rb.velocity.normalized;
     }
 
     void OnDestroy()

@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     protected float fireRate;     // 発射間隔（秒）
     protected float fireCooldown; // 発射タイマー
     protected string text_explaination;
-    
+
     public void Initialize(EnemyData enemyData)
     {
         enemy_name = enemyData.name;
@@ -32,6 +32,7 @@ public class Enemy : MonoBehaviour
             this.hp--;
             if (hp == 0)
             {
+                Destroy(other.gameObject);
                 Destroy(this.gameObject);
             }
         }

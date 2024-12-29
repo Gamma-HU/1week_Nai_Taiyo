@@ -53,8 +53,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeTime: 5
-  distanceMax: 30
-  attractionForce: 10
+  distanceMax: 20
+  attractionForce: 5
   targetMarkerPfb: {fileID: 733235306500261445, guid: d6bae1c34cd6c48a6aacbff6afb0e79c, type: 3}
 --- !u!212 &1719978027917426063
 SpriteRenderer:
@@ -97,8 +97,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 1, g: 0.2971698, b: 0.90561914, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 3522c8cba47b14368a6befcd5e817b96, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
