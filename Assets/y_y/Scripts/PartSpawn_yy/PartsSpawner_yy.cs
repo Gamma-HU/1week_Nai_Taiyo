@@ -88,7 +88,6 @@ public class PartsSpawner_yy : MonoBehaviour
             Vector2 spawnPos = _spawnCaluculateLib.SpawnRandomPos(current_playerPos, radius_min, radius_max);
             PartObj.GetComponent<RectTransform>().anchoredPosition = spawnPos - this.gameObject.GetComponent<RectTransform>().anchoredPosition;
             PartObj.GetComponent<Part>().Initialize(partData_to_spawn);
-            PartObj.GetComponent<Part>().parentObjPos = this.gameObject.GetComponent<RectTransform>().anchoredPosition;
             
             //Debug.Log($"playerPos: {playerGameObj.GetComponent<RectTransform>().anchoredPosition}");
             //Debug.Log($"spawnPos: {spawnPos}");

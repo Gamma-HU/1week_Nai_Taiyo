@@ -9,8 +9,6 @@ public class Part : MonoBehaviour
 {
     protected float hp;
 
-    public Vector2 parentObjPos { get; set; } // 親オブジェクトの座標(弾を打つときの方向の計算に必要)
-
     public void Initialize(PartData partData)
     {
         hp = partData.hp;

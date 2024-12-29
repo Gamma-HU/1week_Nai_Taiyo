@@ -15,6 +15,7 @@ public class PartSpawner : MonoBehaviour
     [Header("スポーンの間隔")] [SerializeField] private float partsSpawnInterval = 0.5f; // スポーン間隔
     [Header("Wave進行による難易度上昇率")]　[SerializeField] private float difficultyScalingFactor = 0.75f;
     [Header("Waveの数")]　[SerializeField] private int maxWaves = 10;
+    [Header("スタート地点の座標")]　[SerializeField] private Vector3 startPosition = new Vector3(0, 0, 0);
 
     private SpawnCaluculateLib _spawnCaluculateLib;
     private GameObject playerGameObj;
@@ -62,7 +63,7 @@ public class PartSpawner : MonoBehaviour
             timeSinceLastSpawn = 0f;
         }
 
-        current_distance = Vector3.Distance(this.gameObject.GetComponent<RectTransform>().anchoredPosition, playerGameObj.GetComponent<RectTransform>().anchoredPosition);;
+        current_distance = Vector3.Distance(startPosition, playerGameObj.GetComponent<RectTransform>().anchoredPosition);;
         if (current_distance >= (max_distance / maxWaves) * (currentWave + 1))
         {
             currentWave++;
@@ -104,9 +105,8 @@ public class PartSpawner : MonoBehaviour
             GameObject PartObj = Instantiate(partData_to_spawn.partPrefab, this.gameObject.transform);
             
             Vector2 spawnPos = _spawnCaluculateLib.SpawnRandomPos(current_playerPos, radius_min, radius_max);
-            PartObj.GetComponent<RectTransform>().anchoredPosition = spawnPos - this.gameObject.GetComponent<RectTransform>().anchoredPosition;
+            PartObj.GetComponent<RectTransform>().anchoredPosition = spawnPos;
             PartObj.GetComponent<Part>().Initialize(partData_to_spawn);
-            PartObj.GetComponent<Part>().parentObjPos = this.gameObject.GetComponent<RectTransform>().anchoredPosition;
             
             AddFloatingPart(PartObj.GetComponent<Part>());
             //Debug.Log($"playerPos: {playerGameObj.GetComponent<RectTransform>().anchoredPosition}");
