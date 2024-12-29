@@ -16,6 +16,10 @@ public class Part_Shot : Part_Action
     //アクションボタン短押しで発動
     public override void PushAction()
     {
+        if (bulletPfb_Push == null)
+        {
+            return;
+        }
         //ワールド座標のRotationを取得
         float angle = transform.rotation.eulerAngles.z;
 
@@ -26,8 +30,12 @@ public class Part_Shot : Part_Action
     //アクションボタン長押しで発動
     public override void HoldAction()
     {
-        shotTimer += Time.deltaTime;
-        if (shotTimer > shotSpan)
+        if (bulletPfb_Hold == null)
+        {
+            return;
+        }
+
+        if (shotTimer <= 0)
         {//ワールド座標のRotationを取得
             float angle = transform.rotation.eulerAngles.z;
 
@@ -35,9 +43,18 @@ public class Part_Shot : Part_Action
             bullet.GetComponent<Rigidbody2D>().velocity = GameManager.instance.player.GetComponent<Rigidbody2D>().velocity;
             bullet.GetComponent<Rigidbody2D>().AddForce(Quaternion.Euler(0, 0, angle) * shotVec.normalized * shotPower, ForceMode2D.Impulse);
 
-            shotTimer = 0;
+            shotTimer = shotSpan;
         }
 
 
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+        if (shotTimer > 0)
+        {
+            shotTimer -= Time.deltaTime;
+        }
     }
 }

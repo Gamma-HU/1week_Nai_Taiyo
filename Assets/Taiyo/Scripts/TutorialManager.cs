@@ -42,10 +42,9 @@ public class TutorialManager : MonoBehaviour
         else
         {
             textTutorial.SetActive(false);
-            imageFade.SetActive(false);
-            FuelSlider.SetActive(true);
-            ButtonConstruct.SetActive(true);
 
+            FuelSlider.SetActive(false);
+            ButtonConstruct.SetActive(false);
 
 
             initialFrame.GetComponent<Rigidbody2D>().AddForce(new Vector2(1, 1) * 5, ForceMode2D.Impulse);
@@ -56,6 +55,8 @@ public class TutorialManager : MonoBehaviour
 
             initialTank.GetComponent<Rigidbody2D>().AddForce(new Vector2(-1, -1) * 5, ForceMode2D.Impulse);
             initialTank.GetComponent<Rigidbody2D>().AddTorque(3, ForceMode2D.Impulse);
+
+            StartCoroutine(StartGameCoroutine());
         }
 
     }
@@ -161,6 +162,14 @@ public class TutorialManager : MonoBehaviour
             textMeshProUGUI.text = text.Substring(0, i);
             yield return new WaitForSeconds(0.1f);
         }
+    }
+
+    IEnumerator StartGameCoroutine()
+    {
+        yield return new WaitForSeconds(2);
+        imageFade.SetActive(false);
+        FuelSlider.SetActive(true);
+        ButtonConstruct.SetActive(true);
     }
 
 }

@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public Player player;
     public bool isGameOver;
+    public bool isGameStart;
 
 
     [SerializeField] CinemachineVirtualCamera vCamera;
@@ -26,6 +27,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject damageEffectPfb;
     [SerializeField] public GameObject peelOffEffectPfb;
     [SerializeField] public GameObject effectFolder;
+
+    [SerializeField] public EnemySpawner enemySpawner;
 
     GameObject textMessageOnThisFrame;
 
@@ -70,6 +73,13 @@ public class GameManager : MonoBehaviour
         ConstructManager.instance.EndConstructMode();
         player.EndConstructMode();
         SetTimeScale(1);
+
+        if (!isGameStart)
+        {
+            isGameStart = true;
+            PartSpawner.instance.StartWave();
+            enemySpawner.StartWave();
+        }
     }
 
     public void DisplayMessage(string message)

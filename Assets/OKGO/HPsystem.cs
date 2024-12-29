@@ -17,7 +17,7 @@ public class HPsystem : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other){
         if(other.gameObject.tag == "Lazer"){
-            HP = HP - LazerDamage;
+            HP -= LazerDamage;
         }
         Debug.Log("kkk");
     }
