@@ -50,8 +50,11 @@ public class GameScore_ClearManager : MonoBehaviour
         current_scoreText.text = $"SCORE: {GameManager.instance.score}";
         if (current_distance > goalDistance)
         {
-            if (is_gameClear) return;
-            GameClear();
+            if (!is_gameClear)
+            {
+                GameClear();
+            }
+            
         }
 
         if (is_score_anim)
@@ -87,8 +90,28 @@ public class GameScore_ClearManager : MonoBehaviour
             enemySpawner.EliminateAllEnemies();
             partSpawner.EliminateAllParts();
         }
-        
 
+        GameObject[] damageSources = GameObject.FindGameObjectsWithTag("DamageSource");
+
+        // 敵の弾を消す
+        foreach (GameObject damageSource in damageSources)
+        {
+            if (damageSource != null)
+            {
+                Destroy(damageSource);
+            }
+        }
+
+        GameObject[] playerBullets = GameObject.FindGameObjectsWithTag("PlayerBullet");
+
+        // 敵の弾を消す
+        foreach (GameObject playerBullet in playerBullets)
+        {
+            if (playerBullets != null)
+            {
+                Destroy(playerBullet);
+            }
+        }
 
 
         RemainDistanceText.text = "GOAL!";

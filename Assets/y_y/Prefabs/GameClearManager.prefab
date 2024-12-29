@@ -167,7 +167,7 @@ RectTransform:
   - {fileID: 4872964855706792073}
   - {fileID: 7389506760306867180}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -198,6 +198,9 @@ MonoBehaviour:
   animationDuration: 2
   Scoretext_animationDuration: 1
   buttons: {fileID: 7550679109838013624}
+  enemySpawner: {fileID: 0}
+  partSpawner: {fileID: 0}
+  CanvasUI: {fileID: 0}
 --- !u!1 &1859603611510945628
 GameObject:
   m_ObjectHideFlags: 0
@@ -591,8 +594,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 473177570312689318}
-        m_TargetAssemblyTypeName: GameClearManager, Assembly-CSharp
-        m_MethodName: PushRestartButton
+        m_TargetAssemblyTypeName: GameScore_ClearManager, Assembly-CSharp
+        m_MethodName: PushTitleButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
