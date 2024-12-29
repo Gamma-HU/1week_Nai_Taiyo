@@ -43,6 +43,8 @@ public class TutorialManager : MonoBehaviour
         {
             textTutorial.SetActive(false);
 
+            FuelSlider.SetActive(false);
+            ButtonConstruct.SetActive(false);
 
 
             initialFrame.GetComponent<Rigidbody2D>().AddForce(new Vector2(1, 1) * 5, ForceMode2D.Impulse);
