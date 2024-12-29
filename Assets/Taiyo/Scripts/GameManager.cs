@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject peelOffEffectPfb;
     [SerializeField] public GameObject effectFolder;
 
-    [SerializeField] EnemySpawner enemySpawner;
+    [SerializeField] public EnemySpawner enemySpawner;
 
     GameObject textMessageOnThisFrame;
 
