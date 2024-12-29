@@ -10,10 +10,9 @@ public class BGMManager : MonoBehaviour
 
     public static float bgmVolume = 0.5f;
 
-    /*
     void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
@@ -23,16 +22,7 @@ public class BGMManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    */
 
-
-    void Start()
-    {
-        if(instance == null)
-        {
-            instance = this;
-        }
-    }
 
     //スライダーでBGMの音量調整
     public void SetBGMVolume(float volume)
