@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     float angleCorrectionForceLeft;
 
     [SerializeField] float fuelRecoverySpeed; //燃料回復速度
+    [SerializeField] public float partRecoverySpeed; //部品回復速度
 
     [SerializeField] Transform partFolder;
 
@@ -46,6 +47,8 @@ public class Player : MonoBehaviour
     Color fuelColorEmpty = new Color(1, 0, 0, 1);
 
     public Vector2 massCenterWorldPos;
+    Part rootPart;
+    public bool is_Gameclear = false;
 
 
     void OnDrawGizmos()
@@ -114,6 +117,12 @@ public class Player : MonoBehaviour
 
     void SetInput()
     {
+        if (is_Gameclear)
+        {
+            inputVec = Vector2.zero;
+            return;
+        }
+        
         inputVec = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
         if (Input.GetKey(KeyCode.Space))
@@ -135,8 +144,12 @@ public class Player : MonoBehaviour
 
     public void AddPart(Part part)
     {
-        if (!partsList.Contains(part)) partsList.Add(part);
-        else return;
+        if (partsList.Contains(part)) return;
+
+
+        if (partsList.Count == 1) rootPart = part; //コックピット以外に初めて部品を追加した場合はルート部品に設定
+        partsList.Add(part);
+
 
         if (part is Part_Frame)
         {
@@ -154,6 +167,7 @@ public class Player : MonoBehaviour
 
     public void RemovePart(Part part)
     {
+        if (rootPart == part) rootPart = null;
         partsList.Remove(part);
         if (part is Part_Frame)
         {
@@ -169,9 +183,40 @@ public class Player : MonoBehaviour
         SetPartPowerParameters();
         SetFuelMax();
 
-        if (partsList.Count == 0)
+        //ゲームオーバー判定
+        if (isConstructMode || GameManager.instance.isGameOver) return;
+
+
+        bool hasPower = false;
+        bool hasTank = false;
+        foreach (Part p in partsList)
+        {
+            if (p is Part_Power)
+            {
+                hasPower = true;
+            }
+            else if (p is Part_Tank)
+            {
+                hasTank = true;
+            }
+
+            if (hasPower && hasTank)
+            {
+                break;
+            }
+        }
+
+        if (!hasPower || !hasTank)
         {
             GameManager.instance.GameOver();
+            //コックピット以外の部品を全て破壊
+            int count = 0; //無限ループ防止
+            while (rootPart && count < 1000)
+            {
+                rootPart.Damage(100);
+                count++;
+                Debug.Log(count);
+            }
         }
     }
 
@@ -375,7 +420,6 @@ public class Player : MonoBehaviour
             }
 
             //if (Mathf.Abs(diff) < 30) diff = math.sign(diff) * 30; //補正する力は30~180の係数で変化
-            Debug.Log(diff);
 
             if (diff > 1) rb.AddTorque((angleCorrectionForceRight + 1) * rb.mass * angleCorrectionRatio);
             else if (diff < -1) rb.AddTorque(-(angleCorrectionForceLeft + 1) * rb.mass * angleCorrectionRatio);

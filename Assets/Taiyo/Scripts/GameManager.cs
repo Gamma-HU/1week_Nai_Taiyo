@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public Player player;
+    public bool isGameOver;
 
 
     [SerializeField] CinemachineVirtualCamera vCamera;
@@ -16,6 +17,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] float orthoSizeNormal;
     [SerializeField] GameObject panelMessage;
     [SerializeField] GameObject textMessagePfb;
+    [SerializeField] public GameObject hPbarPartPfb;
+    [SerializeField] public GameObject hpbarFolder;
 
     GameObject textMessageOnThisFrame;
 
@@ -75,6 +78,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        isGameOver = true;
         DisplayMessage("Game Over");
     }
 

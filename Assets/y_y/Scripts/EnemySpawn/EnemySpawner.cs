@@ -138,4 +138,14 @@ public class EnemySpawner : MonoBehaviour
             }
         }
     }
+
+    public void EliminateAllEnemies()
+    {
+        foreach (GameObject enemy in spawnedEnemies)
+        {
+            Destroy(enemy);
+        }
+        
+        spawnedEnemies.Clear();
+    }
 }
