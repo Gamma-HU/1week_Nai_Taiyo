@@ -1,3 +1,4 @@
+using KoitanLib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -40,6 +41,9 @@ public class Part : MonoBehaviour
     HPbarPart hpbar;
     float damageTimer;
 
+    [SerializeField]
+    SpriteRenderer outlineSr;
+
 
     protected virtual void Awake()
     {
@@ -65,6 +69,7 @@ public class Part : MonoBehaviour
 
         hp = hpMax;
 
+        SetOutline(false);
     }
 
     protected virtual void Update()
@@ -242,7 +247,7 @@ public class Part : MonoBehaviour
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position = new Vector3(mousePos.x, mousePos.y, transform.position.z);
 
-        if (Input.GetMouseButton(1))
+        if (KoitanInput.Get(ButtonCode.B))
         {
             transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 180 * Time.unscaledDeltaTime);
         }
@@ -490,5 +495,15 @@ public class Part : MonoBehaviour
         {
             hpbar.SetHP(hp / hpMax);
         }
+    }
+
+    public void SetOutline(bool value)
+    {
+        if (outlineSr == null)
+        {
+            Debug.LogWarning($"アウトライン用スプライトレンダラーが設定されていません");
+            return;
+        }
+        outlineSr.gameObject.SetActive(value);
     }
 }

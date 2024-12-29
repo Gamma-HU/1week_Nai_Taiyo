@@ -57,7 +57,7 @@ Material:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
     - _Edge1: 0
-    - _Edge2: 0.5
+    - _Edge2: 0.25
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors: []
