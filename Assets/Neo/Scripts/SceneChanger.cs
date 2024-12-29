@@ -10,6 +10,6 @@ public class SceneChanger : MonoBehaviour
     public void Gamestart()
     {
         DOTween.KillAll();
-        SceneManager.LoadScene("");
+        SceneManager.LoadScene("SceneTitle_Taiyo");
     }
 }
