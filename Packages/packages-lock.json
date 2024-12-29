@@ -13,9 +13,10 @@
       "source": "git",
       "dependencies": {
         "com.unity.textmeshpro": "3.0.6",
-        "com.unity.inputsystem": "1.5.1"
+        "com.unity.inputsystem": "1.5.1",
+        "com.unity.shadergraph": "12.1.10"
       },
-      "hash": "d825c1cf573622e239547416afdd4cce2691c60c"
+      "hash": "eef2532810ffefe2b13432bcc52def0530f92e48"
     },
     "com.unity.2d.animation": {
       "version": "9.0.3",
