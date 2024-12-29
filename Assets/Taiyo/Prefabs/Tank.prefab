@@ -156,7 +156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03c581cbb8e74669a00f367875ad6a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 100
   mass: 1
   isCockpit: 0
   isConstructMode: 0
@@ -319,11 +318,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7925515488180141155, guid: a2678865571fe435d9c57ecc4cc5f6ba, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0.3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7925515488180141155, guid: a2678865571fe435d9c57ecc4cc5f6ba, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0.3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7925515488180141155, guid: a2678865571fe435d9c57ecc4cc5f6ba, type: 3}
       propertyPath: m_LocalPosition.x
