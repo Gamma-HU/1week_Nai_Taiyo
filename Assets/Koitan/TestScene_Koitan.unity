@@ -308,6 +308,9 @@ MonoBehaviour:
   m_OnlyForChildren: 0
   m_ShowUnmaskGraphic: 0
   m_EdgeSmoothing: 1
+  _unmaskMaterial: {fileID: 0}
+  _revertUnmaskMaterial: {fileID: 0}
+  _graphic: {fileID: 50636039}
 --- !u!114 &50636039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -762,6 +765,8 @@ MonoBehaviour:
   virtualCamera: {fileID: 148520718}
   zoomDuration: 0.5
   maxCameraSize: 50
+  minCameraSize: 0
+  targetCameraSize: 0
   constructManager: {fileID: 1231727348}
 --- !u!1 &171295234
 GameObject:
@@ -1408,6 +1413,9 @@ MonoBehaviour:
   m_OnlyForChildren: 0
   m_ShowUnmaskGraphic: 0
   m_EdgeSmoothing: 0
+  _unmaskMaterial: {fileID: 0}
+  _revertUnmaskMaterial: {fileID: 0}
+  _graphic: {fileID: 379898004}
 --- !u!114 &379898004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2689,10 +2697,7 @@ MonoBehaviour:
   frictionRatio: 0.99
   frictionAngularRatio: 0.9
   angleCorrectionRatio: 3
-  fuelRecoverySpeed: 0.3
   partFolder: {fileID: 47929934}
-  fuelSlider: {fileID: 1898635980}
-  massCenterWorldPos: {x: 0, y: 0}
 --- !u!1 &809181818
 GameObject:
   m_ObjectHideFlags: 0
@@ -3764,14 +3769,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   constructRange: 20
   connectPointDistance: 5
-  isConstructMode: 0
-  panelConstructScreen: {fileID: 1595956825}
-  massText: {fileID: 1760842532}
-  massPosObj: {fileID: 1895960811}
-  fuelVolumeText: {fileID: 204536805}
-  rightForceText: {fileID: 1842621436}
-  leftForceText: {fileID: 1906298032}
-  fuelConsumptionText: {fileID: 871033184}
 --- !u!1 &1284773394
 GameObject:
   m_ObjectHideFlags: 0
@@ -4189,7 +4186,14 @@ MonoBehaviour:
   partsSpawnInterval: 0.5
   difficultyScalingFactor: 0.75
   maxWaves: 10
+  playerGameObj: {fileID: 0}
   currentWave: 1
+  timeSinceLastSpawn: 0
+  isSpawning: 0
+  current_distance: 0
+  radius_min: 0
+  radius_max: 0
+  current_weights: []
 --- !u!114 &1473636818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4204,14 +4208,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floatingPartFolder: {fileID: 385827516}
   floatingPartList: []
-  max_distance: 1000
-  basePartsNum: 8
-  partsSpawnInterval: 0.5
-  difficultyScalingFactor: 0.75
-  maxWaves: 10
-  startPosition: {x: 0, y: 0, z: 0}
-  maxPatsNum: 50
-  currentWave: 1
 --- !u!1 &1481272368
 GameObject:
   m_ObjectHideFlags: 0
@@ -4891,6 +4887,9 @@ MonoBehaviour:
   m_OnlyForChildren: 0
   m_ShowUnmaskGraphic: 0
   m_EdgeSmoothing: 1
+  _unmaskMaterial: {fileID: 0}
+  _revertUnmaskMaterial: {fileID: 0}
+  _graphic: {fileID: 1780396755}
 --- !u!114 &1780396755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5615,6 +5614,9 @@ MonoBehaviour:
   m_OnlyForChildren: 0
   m_ShowUnmaskGraphic: 0
   m_EdgeSmoothing: 1
+  _unmaskMaterial: {fileID: 0}
+  _revertUnmaskMaterial: {fileID: 0}
+  _graphic: {fileID: 1992463738}
 --- !u!114 &1992463738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5762,8 +5764,6 @@ MonoBehaviour:
   vCamera: {fileID: 148520718}
   orthoSizeConstruct: 15
   orthoSizeNormal: 20
-  panelMessage: {fileID: 2112120941}
-  textMessagePfb: {fileID: 5647984000524798045, guid: a61092ec73164450b951896fca6cb3d6, type: 3}
 --- !u!4 &2041069332
 Transform:
   m_ObjectHideFlags: 0
@@ -5835,6 +5835,9 @@ MonoBehaviour:
   m_OnlyForChildren: 0
   m_ShowUnmaskGraphic: 0
   m_EdgeSmoothing: 0
+  _unmaskMaterial: {fileID: 0}
+  _revertUnmaskMaterial: {fileID: 0}
+  _graphic: {fileID: 2068974338}
 --- !u!114 &2068974338
 MonoBehaviour:
   m_ObjectHideFlags: 0

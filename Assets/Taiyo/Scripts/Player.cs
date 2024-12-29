@@ -4,6 +4,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using KoitanLib;
 
 public class Player : MonoBehaviour
 {
@@ -122,10 +123,10 @@ public class Player : MonoBehaviour
             inputVec = Vector2.zero;
             return;
         }
-        
-        inputVec = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-        if (Input.GetKey(KeyCode.Space))
+        inputVec = KoitanInput.GetStick(StickCode.LeftStick);
+
+        if (KoitanInput.Get(ButtonCode.A))
         {
             if (!inputAction) inputActionDown = true;
             inputAction = true;
