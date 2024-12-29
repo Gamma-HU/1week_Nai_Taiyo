@@ -7,6 +7,17 @@
       "dependencies": {},
       "hash": "33356da2c43fa28397192baee70910c978e3169f"
     },
+    "com.koitan.koitanlib": {
+      "version": "https://github.com/tk-koitan/KoitanLibPackage.git?path=Packages/KoitanLib",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.textmeshpro": "3.0.6",
+        "com.unity.inputsystem": "1.5.1",
+        "com.unity.shadergraph": "12.1.10"
+      },
+      "hash": "eef2532810ffefe2b13432bcc52def0530f92e48"
+    },
     "com.unity.2d.animation": {
       "version": "9.0.3",
       "depth": 1,
@@ -173,6 +184,15 @@
       "source": "registry",
       "dependencies": {
         "com.unity.test-framework": "1.1.9"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.inputsystem": {
+      "version": "1.6.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.uielements": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },

@@ -4,6 +4,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using KoitanLib;
 
 public class Player : MonoBehaviour
 {
@@ -48,6 +49,7 @@ public class Player : MonoBehaviour
 
     public Vector2 massCenterWorldPos;
     Part rootPart;
+    public bool is_Gameclear = false;
 
 
     void OnDrawGizmos()
@@ -116,9 +118,15 @@ public class Player : MonoBehaviour
 
     void SetInput()
     {
-        inputVec = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        if (is_Gameclear)
+        {
+            inputVec = Vector2.zero;
+            return;
+        }
 
-        if (Input.GetKey(KeyCode.Space))
+        inputVec = KoitanInput.GetStick(StickCode.LeftStick);
+
+        if (KoitanInput.Get(ButtonCode.A))
         {
             if (!inputAction) inputActionDown = true;
             inputAction = true;
