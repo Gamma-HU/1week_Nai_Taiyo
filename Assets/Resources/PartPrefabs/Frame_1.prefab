@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1264647028930593349
+--- !u!1 &832015272445797186
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8967692566697292251}
-  - component: {fileID: 1365464005975464246}
+  - component: {fileID: 8348681717871780845}
+  - component: {fileID: 6638116419368084868}
   m_Layer: 0
   m_Name: Outline
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8967692566697292251
+--- !u!4 &8348681717871780845
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1264647028930593349}
+  m_GameObject: {fileID: 832015272445797186}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,13 +32,13 @@ Transform:
   m_Father: {fileID: 5440862912819472255}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &1365464005975464246
+--- !u!212 &6638116419368084868
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1264647028930593349}
+  m_GameObject: {fileID: 832015272445797186}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 59a2b8e4abb34014186d4894ff02627a, type: 2}
+  - {fileID: 2100000, guid: 2dea92400ce77b44eab22a55bbfef6fa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -6
   m_Sprite: {fileID: 21300000, guid: c3bfbd40550059d498532381d0fa5adc, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.58431375, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -120,7 +120,7 @@ RectTransform:
   - {fileID: 2315328848010047969}
   - {fileID: 4282689830253288493}
   - {fileID: 4190419544566185836}
-  - {fileID: 8967692566697292251}
+  - {fileID: 8348681717871780845}
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -147,7 +147,7 @@ MonoBehaviour:
   isConstructMode: 0
   isConnected: 0
   connectPoints: []
-  outlineSr: {fileID: 1365464005975464246}
+  outlineSr: {fileID: 6638116419368084868}
   connectedParts: []
 --- !u!212 &178257364812329583
 SpriteRenderer:
