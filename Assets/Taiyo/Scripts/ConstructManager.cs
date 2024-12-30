@@ -33,6 +33,8 @@ public class ConstructManager : MonoBehaviour
     RectTransform partTextPanel;
     [SerializeField]
     TextMeshProUGUI partText;
+    [SerializeField]
+    RectTransform partTextLineParent;
 
     void Awake()
     {
@@ -160,7 +162,28 @@ public class ConstructManager : MonoBehaviour
         {
             partTextPanel.gameObject.SetActive(true);
             partTextPanel.transform.position = partSelected.transform.position;
-            partTextPanel.transform.localPosition += new Vector3(330, 200);
+            Vector3 movePos = partTextPanel.transform.localPosition;
+            Vector3 scale = Vector3.one;
+            if (movePos.x < 500)
+            {
+                movePos.x += 330;
+            }
+            else
+            {
+                movePos.x -= 330;
+                scale.x = -1;
+            }
+            if (movePos.y < 200)
+            {
+                movePos.y += 200;
+            }
+            else
+            {
+                movePos.y -= 200;
+                scale.y = -1;
+            }
+            partTextPanel.transform.localPosition = movePos;
+            partTextLineParent.transform.localScale = scale;
             partText.text = $"名前：{partSelected}\n";
         }
     }
