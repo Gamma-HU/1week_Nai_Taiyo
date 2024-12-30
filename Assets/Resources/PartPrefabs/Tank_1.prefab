@@ -140,12 +140,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpMax: 10
+  partData:
+    partType: 0
+    partPrefab: {fileID: 0}
+    name: 
+    hp: 0
+    text_explaination: 
   mass: 1
   isCockpit: 0
   isConstructMode: 0
   isConnected: 0
   connectPoints: []
   outlineSr: {fileID: 8179856697560027535}
+  isHuman: 0
+  isRareHuman: 0
   volume: 10
 --- !u!212 &2926559888067926802
 SpriteRenderer:
